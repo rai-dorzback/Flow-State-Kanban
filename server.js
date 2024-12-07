@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const { ObjectId } = require('mongodb'); // Destructure ObjectId from mongodb
 const PORT = 8000;
 require('dotenv').config(); // Import dotenv
 
@@ -13,28 +14,24 @@ async function startServer() {
         console.log('Connected to Database');
         const db = client.db('KanbanTasks');
         const tasksCollection = db.collection('tasks');
-    
-        // create tasks
-        app.post('/tasks', async (req, res) => {
-            // ***hardcoded task for testing
-            const task = {
-                title: 'Test task',
-                desc: 'This is a test task.',
-                status: 'To do'
-            };
 
-            try {
-                const result = await tasksCollection.insertOne(task)
-                res.status(201).json({ message: 'Task created successfully', task: result.ops[0] });
-            } catch(err) {
-                console.error(err);
-            };
-        });
+        // MIDDLEWARE
+        // lets PATCH/PUT requests use JSON
+        app.use(express.json())
 
         // **in future, serve up index.html
         app.get('/', (req, res) => {
             res.send('Hello')
         })
+
+        // get all tasks
+        app.get('/tasks', readTasks(tasksCollection))
+
+        // create tasks
+        app.post('/create', createTask(tasksCollection));
+
+        // update task status
+        app.patch('/tasks/:id', updateStatus(tasksCollection));
         
         // list on port
         app.listen(PORT, () => {console.log(`Server is running on ${PORT}`)});
@@ -44,3 +41,57 @@ async function startServer() {
 };
 
 startServer()
+
+function createTask(tasksCollection) {
+    return async (req, res) => {
+        // ***hardcoded task for testing
+        const task = {
+            title: 'Test task',
+            desc: 'This is another test task.',
+            status: 'To do'
+        };
+
+        try {
+            const result = await tasksCollection.insertOne(task);
+            console.log(`Result of creating a task ${result}`);
+            res.status(201).json({ message: 'Task created successfully' });
+        } catch(err) {
+            console.error(err);
+            res.status(500).json({ message: 'Error creating task' });
+        };
+    };
+};
+
+function readTasks(tasksCollection) {
+    return async (req, res) => {
+        try {
+            const tasks = await tasksCollection.find().toArray()
+            res.status(200).json(tasks);
+        } catch(err) {
+            console.error(err);
+            res.status(500).json({ message: 'Error fetching tasks' });
+        };
+    };
+};
+
+// *** LEFT OFF HERE
+function updateStatus(tasksCollection) {
+    return async (req, res) => {
+        try {
+            const taskId = `${req.params.id}`;
+            // get new status from req body
+            const { status } = req.body;
+
+            // *** get this working - issue with id. updates task status to null;
+            const result = await tasksCollection.updateOne(
+                { _id: new ObjectId(taskId) }, // Find the task by _id
+                { $set: { status } }  // Set the new status
+            );
+            res.status(200).json({ message: 'Task status updated successfully' });
+        } catch(err) {
+            console.error(err);
+            res.status(500).json({ message: 'Error updating task status'    
+            });
+        }
+    } 
+};

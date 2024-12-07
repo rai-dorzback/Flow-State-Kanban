@@ -3,6 +3,8 @@
 ## Technologies Used
 Frontend: React, TailwindCSS
 Backend: Node.js, Express, MongoDB
+Testing: Postman
+Design: Figma
 
 ## Lessons Learned
 I began to build a kanban board app in React before I had learned any backend. Now I have learned some and I want to try building it using this. I have decided to build the back and first and sort of start fresh and then bring in the front end and use code for my other repository to do that.
@@ -14,3 +16,6 @@ In thinking about the CRUD app:
 - Read (GET): Showing tasks on board
 - Update (PUT): Editing tasks
 - Delete (DELETE): Deleting tasks
+
+Next steps:
+- Figure out how to complete the patch request to update status (i.e., from To Do to In Progress), matching the task by ID and then updating the status.
