@@ -3,8 +3,9 @@
 ## Technologies Used
 Frontend: React, TailwindCSS
 Backend: Node.js, Express, MongoDB
-Testing: Postman
 Design: Figma
+Testing: Postman
+Version Control: Git
 
 ## Development Steage
 ***Dec 7, 2024***
