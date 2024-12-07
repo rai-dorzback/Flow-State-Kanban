@@ -18,10 +18,12 @@ async function startServer() {
         // MIDDLEWARE
         // lets PATCH/PUT requests use JSON
         app.use(express.json())
+        // let us extract data from form element and add to req.body
+        app.use(express.urlencoded({ extended: true }))
 
         // **in future, serve up index.html
         app.get('/', (req, res) => {
-            res.send('Hello')
+            res.send('Server is running!')
         })
 
         // get all tasks
@@ -74,19 +76,19 @@ function readTasks(tasksCollection) {
     };
 };
 
-// *** LEFT OFF HERE
 function updateStatus(tasksCollection) {
     return async (req, res) => {
         try {
             const taskId = `${req.params.id}`;
-            // get new status from req body
-            const { status } = req.body;
+            // *** get new status from req body once there is a form
+            const status = 'In Progress'
 
-            // *** get this working - issue with id. updates task status to null;
             const result = await tasksCollection.updateOne(
                 { _id: new ObjectId(taskId) }, // Find the task by _id
                 { $set: { status } }  // Set the new status
             );
+
+            console.log(result);
             res.status(200).json({ message: 'Task status updated successfully' });
         } catch(err) {
             console.error(err);
