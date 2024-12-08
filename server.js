@@ -54,7 +54,7 @@ startServer()
 
 function createTask(tasksCollection) {
     return async (req, res) => {
-        // ***hardcoded task for testing
+        // ***hardcoded task for testing. change this to be dynamic with user input
         const task = {
             title: 'Test task',
             desc: 'This is another test task.',

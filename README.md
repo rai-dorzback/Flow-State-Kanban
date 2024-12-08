@@ -56,6 +56,17 @@ Currently, these updates are hard-coded, but they will eventually be dynamic wit
 
 In working on the delete functionality, I ran into an issue with parsing the id as an ObjectID correctly. While I am got a deprecation warning about new ObjectID(), I was able to use it to match up the ID from the query parameter with the __id in MongoDB.
 
+#### **Next Steps**
+- Start implementing the frontend:
+  - Begin integrating the **React** components to display and interact with the tasks from the backend.
+  - Set up routing and state management (likely using React's `useState` and `useEffect` or a state management library like Redux) for task updates.
+  - Connect the frontend with the backend endpoints to allow for dynamic interactions, such as adding, updating, and deleting tasks.
+  
+- Further refine backend functionality:
+  - Update the `PATCH` endpoint to handle dynamic task status from the frontend rather than being hardcoded.
+  - Implement additional validation and error handling for the `PATCH` and `DELETE` requests.
+- Plan the database schema optimization for scalability as the project grows.
+
 ---
 
 ### **Dec 6, 2024**
