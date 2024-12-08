@@ -41,7 +41,9 @@ async function startServer() {
         // update task desc
         app.patch('/tasks/desc/:id', updateTask(tasksCollection, 'desc'));
 
-        // list on port
+        app.delete('/tasks/:id', deleteTask(tasksCollection));
+
+        // listen on port
         app.listen(PORT, () => { console.log(`Server is running on ${PORT}`) });
     } catch (err) {
         console.log(err);
@@ -70,6 +72,27 @@ function createTask(tasksCollection) {
     };
 };
 
+function deleteTask(tasksCollection) {
+    return async (req, res) => {
+        try {
+            const taskId = req.params.id;
+            const result = await tasksCollection.deleteOne({ _id: new ObjectId(taskId) });
+            console.log(result);
+
+            if(result.deletedCount === 1) {
+                res.status(204).json({ message: 'Task deleted successfully' })
+            }
+
+            if (result.deletedCount === 0) {
+                return res.status(404).json({ message: 'Task not found' });
+            }
+        } catch(err) {
+            console.error(err);
+            res.status(500).json({ error: 'Error deleting task' })
+        }
+    };
+};
+
 function readTasks(tasksCollection) {
     return async (req, res) => {
         try {
@@ -85,7 +108,7 @@ function readTasks(tasksCollection) {
 function updateTask(tasksCollection, property) {
     return async (req, res) => {
         try {
-            const taskId = `${req.params.id}`;
+            const taskId = req.params.id;
             
             let result;
             switch(property) {

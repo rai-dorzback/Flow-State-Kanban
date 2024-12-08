@@ -52,9 +52,9 @@ Currently, these updates are hard-coded, but they will eventually be dynamic wit
 - **Read:** Retrieve all existing tasks.
 - **Create:** Add new tasks.
 - **Update:** Modify the task status, title, and description using `PATCH` requests.
+- **Delete:** Delete a task by its ID in MongoDB.
 
-#### Next Steps
-- Implement the **Delete** functionality for tasks.
+In working on the delete functionality, I ran into an issue with parsing the id as an ObjectID correctly. While I am got a deprecation warning about new ObjectID(), I was able to use it to match up the ID from the query parameter with the __id in MongoDB.
 
 ---
 
