@@ -11,6 +11,17 @@ Version Control: Git
 ***Dec 7, 2024***
 I realized the problem with my PATCH request was not an issue with matching the task ID with its id in MongoDB Atlas-- it was with trying to take in req.body for the status. Right now, since there is no front-end, I am hard coding this to "In Progress." Once I have built a front-end and a form that will send its data to the /tasks/:id endpoint, I will change it back to req.body.
 
+Added functionality to edit status, description, and title of task so users can change them. Used PATCH requests. Right now, the updated values are hard-coded. In the future, when the front-end has been built, I will need to change this to get the values out of a form using req.body.
+
+Now the implemented functionality is as follows:
+- Read all existing tasks
+- Create new task
+- Update task status
+- Update task title
+- Update task desc
+
+The next thing to implement is deleting tasks.
+
 ***Dec 6, 2024:***
 In thinking about the CRUD app:
 - Create (POST): Adding tasks

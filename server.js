@@ -33,11 +33,17 @@ async function startServer() {
         app.post('/create', createTask(tasksCollection));
 
         // update task status
-        app.patch('/tasks/:id', updateStatus(tasksCollection));
-        
+        app.patch('/tasks/status/:id', updateTask(tasksCollection, 'status'));
+
+        // update task title
+        app.patch('/tasks/title/:id', updateTask(tasksCollection, 'title'));
+
+        // update task desc
+        app.patch('/tasks/desc/:id', updateTask(tasksCollection, 'desc'));
+
         // list on port
-        app.listen(PORT, () => {console.log(`Server is running on ${PORT}`)});
-    } catch(err) {
+        app.listen(PORT, () => { console.log(`Server is running on ${PORT}`) });
+    } catch (err) {
         console.log(err);
     };
 };
@@ -57,7 +63,7 @@ function createTask(tasksCollection) {
             const result = await tasksCollection.insertOne(task);
             console.log(`Result of creating a task ${result}`);
             res.status(201).json({ message: 'Task created successfully' });
-        } catch(err) {
+        } catch (err) {
             console.error(err);
             res.status(500).json({ message: 'Error creating task' });
         };
@@ -69,31 +75,66 @@ function readTasks(tasksCollection) {
         try {
             const tasks = await tasksCollection.find().toArray()
             res.status(200).json(tasks);
-        } catch(err) {
+        } catch (err) {
             console.error(err);
             res.status(500).json({ message: 'Error fetching tasks' });
         };
     };
 };
 
-function updateStatus(tasksCollection) {
+function updateTask(tasksCollection, property) {
     return async (req, res) => {
         try {
             const taskId = `${req.params.id}`;
-            // *** get new status from req body once there is a form
-            const status = 'In Progress'
-
-            const result = await tasksCollection.updateOne(
-                { _id: new ObjectId(taskId) }, // Find the task by _id
-                { $set: { status } }  // Set the new status
-            );
+            
+            let result;
+            switch(property) {
+                case 'status':
+                    result = handleStatusUpdate(tasksCollection, taskId)
+                    break;
+                case 'title':
+                    result = handleTitleUpdate(tasksCollection, taskId)
+                    break;
+                case 'desc':
+                    result = handleDescUpdate(tasksCollection, taskId)
+            }
 
             console.log(result);
-            res.status(200).json({ message: 'Task status updated successfully' });
+            res.status(200).json({ message: 'Task updated successfully' });
         } catch(err) {
             console.error(err);
-            res.status(500).json({ message: 'Error updating task status'    
+            res.status(500).json({ message: 'Error updating task'    
             });
         }
     } 
 };
+
+async function handleStatusUpdate(tasksCollection, taskId) {
+    // *** get new status from req body once there is a form
+    const status = 'In Progress';
+    const result = await tasksCollection.updateOne(
+        { _id: new ObjectId(taskId) }, // Find the task by _id
+        { $set: { status } }  // Set the new status
+    );
+    return result;
+}
+
+async function handleTitleUpdate(tasksCollection, taskId) {
+    // *** get new title from req body once there is a form
+    const title = 'Updated Title';
+    const result = await tasksCollection.updateOne(
+        { _id: new ObjectId(taskId) }, // Find the task by _id
+        { $set: { title } }  // Set the new status
+    );
+    return result;
+}
+
+async function handleDescUpdate(tasksCollection, taskId) {
+    // *** get new desc from req body once there is a form
+    const desc = 'Updated Description';
+    const result = await tasksCollection.updateOne(
+        { _id: new ObjectId(taskId) }, // Find the task by _id
+        { $set: { desc } }  // Set the new status
+    );
+    return result;
+}
