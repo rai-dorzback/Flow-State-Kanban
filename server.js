@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const { ObjectId } = require('mongodb'); // Destructure ObjectId from mongodb
 const PORT = 8000;
-require('dotenv').config(); // Import dotenv
 
 const MongoClient = require('mongodb').MongoClient;
 const password = encodeURIComponent(process.env.DB_PASSWORD);
