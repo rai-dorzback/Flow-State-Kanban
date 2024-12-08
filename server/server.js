@@ -83,7 +83,7 @@ function deleteTask(tasksCollection) {
             }
 
             if (result.deletedCount === 0) {
-                return res.status(404).json({ message: 'Task not found' });
+                return res.status(404).json({ error: 'Task not found' });
             }
         } catch(err) {
             console.error(err);
