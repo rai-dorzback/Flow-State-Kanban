@@ -1,8 +1,34 @@
+// import express and mongoose
 const express = require('express');
+const mongoose = require('mongoose');
+const {Schema} = mongoose;
 const app = express();
-const { ObjectId } = require('mongodb'); // Destructure ObjectId from mongodb
-const PORT = 8000;
+const PORT = process.env.PORT;
 
+// Define the schemas using Mongoose
+const taskSchema = new Schema({
+    title: { type: String, required: true },
+    desc: { type: String, default: '' },
+    status: { type: String, required: true, enum: ['To Do', 'In Progress', 'Done'], default: 'To Do' },
+});
+
+const columnSchema = new Schema({
+    title: { type: String, required: true },
+    tasks: [taskSchema], // Embed tasks into columns
+});
+
+const boardSchema = new Schema({
+    title: { type: String, required: true },
+    columns: { type: [columnSchema], default: [] }, // Embed columns into boards
+});
+
+// Create models
+const Task = mongoose.model('Task', taskSchema);
+const Column = mongoose.model('Column', columnSchema);
+const Board = mongoose.model('Board', boardSchema);
+
+// Destructure ObjectId from mongodb
+const { ObjectId } = require('mongodb'); // 
 const MongoClient = require('mongodb').MongoClient;
 const password = encodeURIComponent(process.env.DB_PASSWORD);
 const uri = `mongodb+srv://trikru:${password}@cluster0.atp5l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
@@ -79,7 +105,7 @@ function deleteTask(tasksCollection) {
             console.log(result);
 
             if(result.deletedCount === 1) {
-                res.status(204).json({ message: 'Task deleted successfully' })
+                res.status(204).json({ message: 'Task deleted successflly' })
             }
 
             if (result.deletedCount === 0) {
@@ -139,7 +165,7 @@ async function handleStatusUpdate(tasksCollection, taskId) {
         { $set: { status } }  // Set the new status
     );
     return result;
-}
+};
 
 async function handleTitleUpdate(tasksCollection, taskId) {
     // *** get new title from req body once there is a form
@@ -149,7 +175,7 @@ async function handleTitleUpdate(tasksCollection, taskId) {
         { $set: { title } }  // Set the new status
     );
     return result;
-}
+};
 
 async function handleDescUpdate(tasksCollection, taskId) {
     // *** get new desc from req body once there is a form
@@ -159,4 +185,4 @@ async function handleDescUpdate(tasksCollection, taskId) {
         { $set: { desc } }  // Set the new status
     );
     return result;
-}
+};

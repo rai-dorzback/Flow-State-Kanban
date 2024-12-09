@@ -37,6 +37,8 @@ I chose to begin the backend development from scratch as I am currently learning
 ---
 
 ## Development Stage
+### **Dec 8, 2024**
+Today, I combined the backend app with my React frontend so I can start connecting it to the API in server.js. I used create vite@latest for the boilerplate.
 
 ### **Dec 7, 2024**
 #### Progress
