@@ -19,7 +19,7 @@ const columnSchema = new Schema({
 });
 
 const boardSchema = new Schema({
-    title: { type: String, required: true },
+    title: { type: String, required: true},
     columns: { type: [columnSchema], default: [] }, // Embed columns into boards
 });
 
@@ -52,6 +52,7 @@ async function startServer() {
         app.use(express.json())
         // let us extract data from form element and add to req.body
         app.use(express.urlencoded({ extended: true }))
+        // enable CORS for all requests
         app.use(cors());
 
         // **in future, serve up index.html
@@ -60,17 +61,22 @@ async function startServer() {
         });
 
         // get all tasks
-        app.get('/tasks', (req, res) => readTasks(req, res));
+        app.get('/api/tasks', (req, res) => readTasks(req, res));
 
-        // create tasks
-        app.post('/create', (req, res) => createTask(req, res));
+        // create new board
+        app.post('/api/boards/create', (req, res) => createBoard(req, res));
+        // create new task
+        app.post('/api/create', (req, res) => createTask(req, res));
+
+        // PATCH request to update board title
+        app.patch('/api/boards/title/:id', (req, res) => updateBoardTitle(req, res));
 
         // PATCH requests to update task
-        app.patch('/tasks/status/:id', (req, res) => updateTask(req, res, 'status'));
-        app.patch('/tasks/title/:id', (req, res) => updateTask(req, res, 'title'));
-        app.patch('/tasks/desc/:id', (req, res) => updateTask(req, res, 'desc'));
+        app.patch('/api/tasks/status/:id', (req, res) => updateTask(req, res, 'status'));
+        app.patch('/api/tasks/title/:id', (req, res) => updateTask(req, res, 'title'));
+        app.patch('/api/tasks/desc/:id', (req, res) => updateTask(req, res, 'desc'));
 
-        app.delete('/tasks/:id', (req, res) => deleteTask(req, res));
+        app.delete('/api/tasks/:id', (req, res) => deleteTask(req, res));
 
         // listen on port
         app.listen(PORT, () => { console.log(`Server is running on ${PORT}`) });
@@ -79,13 +85,55 @@ async function startServer() {
     };
 };
 
+async function createBoard(req, res) {
+    try {
+        const board = new Board({
+            title: req.body.title || 'My Kanban Board',
+            // default columns with no tasks
+            columns: [
+                { title: 'To Do', tasks: [] },
+                { title: 'In Progress', tasks: [] },
+                { title: 'Done', tasks: [] }
+            ]
+        });
+
+        const savedBoard = await board.save();
+        res.status(201).json(savedBoard);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error creating board' });
+    }
+};
+
+async function updateBoardTitle(req, res) {
+    const boardId = req.params.id;
+    const newTitle = req.body.title || "My Kanban Board";
+    
+    try { 
+        const updatedBoard = await Board.findByIdAndUpdate(
+            boardId, 
+            { title: newTitle },
+            { new: true }
+        );
+
+        if (!updatedBoard) {
+            return res.status(404).json({ message: 'Board not found' });
+        }
+
+        res.status(200).json(updatedBoard);
+
+    } catch(err) {
+        console.error(err);
+        res.status(404).json({ message: 'Error updating title' });
+    }
+};
+
 async function createTask(req, res) {
     try {
-        // ***hardcoded task for testing. change this to be dynamic with user input
         const task = new Task({
-            title: 'Test task', // ***req.body.title
-            desc: 'This is another test task.', // ***req.body.desc
-            status: 'To do' // ***req.body.status
+            title: req.body.title,
+            desc: req.body.desc,
+            status: req.body.status
         });
 
         // save new task to database

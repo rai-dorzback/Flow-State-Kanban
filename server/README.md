@@ -40,6 +40,23 @@ I chose to begin the backend development from scratch as I am currently learning
 ### **Dec 8, 2024**
 Today, I combined the backend app with my React frontend so I can start connecting it to the API in server.js. I used create vite@latest for the boilerplate.
 
+I decided to switch the vanilla MongoDB to use Mongoose, as it makes it so much easier to define Schemas/Models and to update a task.
+
+I added logic to create a new board with 3 default columns: To Do, In Progress, Done. I also added a route to update the board title at '/boards/title/:id'. 
+
+Because I want to add a homepage that will ask the user if they want to create a new board or use an existing one, I am going to use react-router-dom to create a Homepage route and a BoardView route.
+
+Because I changed the structure of App.jsx, I had to move the openModal state into BoardView so that the modal was associated with the view of the Kanban board.
+
+Next steps:
+- Add a homepage asking user to create a new board ✅
+- Add ability to select one of your existing boards from homepage
+- Style homepage
+- Navigate Home > Board page after creating board
+- Have boardview dynamically read/display title from database
+- Give user ability to change title (using database)
+- Consider changing endpoints to have query parameters (i.e., ?q=) instead of just longer and longer paths (how it is now). Model it off of apis like cocktailDB
+
 ### **Dec 7, 2024**
 #### Progress
 - Solved a problem with the `PATCH` request: The issue was not with matching the task ID in MongoDB Atlas but with handling `req.body` for the `status`. For now, I’ve hard-coded the status to `"In Progress"`. Once the frontend is implemented, I’ll update this to dynamically fetch the status from a form via `req.body`.
@@ -87,6 +104,8 @@ This project will be my first full-stack app. I’ve decided to focus entirely o
 
 ## Lessons Learned
 When I initially began building the Kanban board app using **React**, I had no experience with backend development. Now, after learning backend technologies, I’ve decided to start fresh and focus on building the backend first. Once the backend is complete, I’ll integrate the frontend from my [original repository](https://github.com/raisa-d/KanbanBoard).
+
+I made a key mistake of forgetting to put a forward slash at the beginning of an endpoint.
 
 #### Notes:
 - Any comments in the code prefixed with three stars (**`***`**) indicate areas that need further implementation or revisiting.
