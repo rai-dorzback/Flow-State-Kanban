@@ -2,8 +2,6 @@
 
 Kanban Board allows users to create, manage, and organize tasks into customizable columns. Users can add new tasks, move them between columns (e.g., To Do, In Progress, Done) using drag-and-drop, and customize each column’s color. The app uses React for dynamic UI updates and local storage to persist data across sessions. This project demonstrates fundamental React concepts like state management, event handling, and working with local storage for persistence.
 
----
-
 ## Table of Contents
 - [Technologies Used](#technologies-used)
 - [Features](#features)
@@ -14,27 +12,22 @@ Kanban Board allows users to create, manage, and organize tasks into customizabl
 - [Contact](#contact)
 
 ## Technologies Used
-
-### Frontend
+Frontend
 - React
 - Vite
 - TailwindCSS
 - Javascript
 - HTML
 
-### Backend
+Backend
 - Node.js
 - Express
 - MongoDB
 
-### Other Tools
+Other Tools
 - **Design:** Figma
 - **Testing:** Postman
 - **Version Control:** Git
-<!-- Git -->
-<a href="https://git-scm.com/" target="_blank" rel="noreferrer"> 
-  <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> 
-</a>
 
 ## Features
 - Create, Read, Update, and Delete Tasks
@@ -46,7 +39,7 @@ Kanban Board allows users to create, manage, and organize tasks into customizabl
 - Mobile-first Design: The app is built to be responsive and works on both desktop and mobile devices.
 
 ## Development Stage
-### **Dec 8, 2024**
+**Dec 8, 2024**
 -Today, I integrated the backend with the React frontend, enabling the frontend to connect to the API in `server.js`. I used `create vite@latest` to quickly set up the boilerplate.
 - I decided to transition from using vanilla MongoDB to **Mongoose**, as it provides a much cleaner and more efficient way to define schemas and models, especially when it comes to updating tasks, boards, and columns.
 - I added functionality to create a new board with three default columns: **To Do**, **In Progress**, and **Done**. Additionally, I implemented a route at `/boards/title/:id` to allow users to update the board title.
@@ -63,8 +56,7 @@ Next steps:
 - Consider changing endpoints to have query parameters (i.e., ?q=) instead of just longer and longer paths (how it is now). Model it off of apis like cocktailDB
 - Integrate client and server readmes
 
-### **Dec 7, 2024**
-#### Progress
+**Dec 7, 2024** Progress
 - Solved a problem with the `PATCH` request: The issue was not with matching the task ID in MongoDB Atlas but with handling `req.body` for the `status`. For now, I’ve hard-coded the status to `"In Progress"`. Once the frontend is implemented, I’ll update this to dynamically fetch the status from a form via `req.body`.
 - Added functionality to update the following task properties:
   - **Status**
@@ -72,8 +64,7 @@ Next steps:
   - **Title**
 
 Currently, these updates are hard-coded, but they will eventually be dynamic with frontend input.
-
-#### Implemented Functionality
+ Implemented Functionality
 - **Read:** Retrieve all existing tasks.
 - **Create:** Add new tasks.
 - **Update:** Modify the task status, title, and description using `PATCH` requests.
@@ -81,7 +72,7 @@ Currently, these updates are hard-coded, but they will eventually be dynamic wit
 
 In working on the delete functionality, I ran into an issue with parsing the id as an ObjectID correctly. While I am got a deprecation warning about new ObjectID(), I was able to use it to match up the ID from the query parameter with the __id in MongoDB.
 
-#### **Next Steps**
+## **Next Steps**
 - Start implementing the frontend:
   - Begin integrating the **React** components to display and interact with the tasks from the backend.
   - Set up routing and state management (likely using React's `useState` and `useEffect` or a state management library like Redux) for task updates.
@@ -92,12 +83,9 @@ In working on the delete functionality, I ran into an issue with parsing the id 
   - Implement additional validation and error handling for the `PATCH` and `DELETE` requests.
 - Plan the database schema optimization for scalability as the project grows.
 
----
-
-### **Dec 6, 2024**
+**Dec 6, 2024**
 I have started to learn Node,js, Express, and MongoDB so I will be switching to working on the backend. Instead of local storage, I am building an API that interfaces with the database. I chose to begin the backend development from scratch as I am currently learning backend technologies and wanted a clean start before integrating them with the frontend. 
-
-#### Reflection on CRUD Functionality:
+ Reflection on CRUD Functionality:
 - **Create (POST):** Add tasks to the board.
 - **Read (GET):** Display tasks on the board.
 - **Update (PUT):** Edit task details.
@@ -108,7 +96,7 @@ This project will be my first full-stack app. I’ve decided to focus entirely o
 Next Steps
 - Resolve `PATCH` request to update the task status (e.g., from "To Do" to "In Progress") by matching the task ID and updating the status.
 
-### **Nov 26, 2024:**
+**Nov 26, 2024:**
 **Refactoring KanbanBoard component**
 - To streamline the `KanbanBoard` component and improve readability:
   - Created a new `EditableTitle` component to handle the board title logic and UI.
@@ -131,11 +119,11 @@ Next Steps
 - Dynamic input width for kanban title
 - Finish implementing task state management
 
-### **Nov 24, 2024:**
+**Nov 24, 2024:**
 - First, I decided to move AddNewTask from its own jsx file into Column.jsx since it was a small function that is only used in the Column component.
 - I reread some of the React docs while I thought about how I want to pass in the various tasks/task cards into each column. I have decided to set a prop "children" for Column and then pass in the tasks object/task cards as the children. The tasks will conditionally render based on which column its supposed to be in. Using a children prop makes it so we don't need to know what will be inside each Column.
 
-### **Nov 23, 2024:**
+**Nov 23, 2024:**
 **Event Handling & Modal State**
 - Went back to the React docs to refamiliarize myself with event handling.
 - I was still deciding where the best place is to store the `openModal` state for adding a new task.
@@ -154,7 +142,7 @@ Next Steps
 - Currently, users can press **Enter** to submit the new title.
 - Plan to improve this in the future by adding clearer submit and cancel actions (e.g., check and X buttons).
 
-### **Nov 21, 2024:**
+**Nov 21, 2024:**
 - Started by creating a boilerplate React app using `create vite@latest`.
 
 **Steps Taken:**
@@ -206,8 +194,7 @@ Next Steps
 - Gained experience in breaking down a project into components and understanding how to structure the app for better maintainability.
 - When I initially began building the Kanban board app using **React**, I had no experience with backend development. Now, after learning backend technologies, I’ve decided to start fresh and focus on building the backend first and integrate it with the frontend later.
 - I made a key mistake of forgetting to put a forward slash at the beginning of an endpoint-- will not make this one again!
-
-#### Notes:
+ Notes:
 - Any comments in the code prefixed with three stars (**`***`**) indicate areas that need further implementation or revisiting.
 
 ## Resources
