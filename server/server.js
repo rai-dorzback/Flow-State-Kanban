@@ -1,6 +1,7 @@
 // import express and mongoose
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const {Schema} = mongoose;
 const app = express();
 const PORT = process.env.PORT;
@@ -33,40 +34,43 @@ const MongoClient = require('mongodb').MongoClient;
 const password = encodeURIComponent(process.env.DB_PASSWORD);
 const uri = `mongodb+srv://trikru:${password}@cluster0.atp5l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
+async function connectToDatabase() {
+    try {
+        await mongoose.connect(uri);
+        console.log('Connected to MongoDB with Mongoose');
+    } catch (err) {
+        console.error('MongoDB connection error:', err);
+    }
+};
+
 async function startServer() {
     try {
-        const client = await MongoClient.connect(uri);
-        console.log('Connected to Database');
-        const db = client.db('KanbanTasks');
-        const tasksCollection = db.collection('tasks');
+        connectToDatabase();
 
         // MIDDLEWARE
         // lets PATCH/PUT requests use JSON
         app.use(express.json())
         // let us extract data from form element and add to req.body
         app.use(express.urlencoded({ extended: true }))
+        app.use(cors());
 
         // **in future, serve up index.html
         app.get('/', (req, res) => {
             res.send('Server is running!')
-        })
+        });
 
         // get all tasks
-        app.get('/tasks', readTasks(tasksCollection))
+        app.get('/tasks', (req, res) => readTasks(req, res));
 
         // create tasks
-        app.post('/create', createTask(tasksCollection));
+        app.post('/create', (req, res) => createTask(req, res));
 
-        // update task status
-        app.patch('/tasks/status/:id', updateTask(tasksCollection, 'status'));
+        // PATCH requests to update task
+        app.patch('/tasks/status/:id', (req, res) => updateTask(req, res, 'status'));
+        app.patch('/tasks/title/:id', (req, res) => updateTask(req, res, 'title'));
+        app.patch('/tasks/desc/:id', (req, res) => updateTask(req, res, 'desc'));
 
-        // update task title
-        app.patch('/tasks/title/:id', updateTask(tasksCollection, 'title'));
-
-        // update task desc
-        app.patch('/tasks/desc/:id', updateTask(tasksCollection, 'desc'));
-
-        app.delete('/tasks/:id', deleteTask(tasksCollection));
+        app.delete('/tasks/:id', (req, res) => deleteTask(req, res));
 
         // listen on port
         app.listen(PORT, () => { console.log(`Server is running on ${PORT}`) });
@@ -75,114 +79,66 @@ async function startServer() {
     };
 };
 
-startServer()
-
-function createTask(tasksCollection) {
-    return async (req, res) => {
+async function createTask(req, res) {
+    try {
         // ***hardcoded task for testing. change this to be dynamic with user input
-        const task = {
-            title: 'Test task',
-            desc: 'This is another test task.',
-            status: 'To do'
-        };
+        const task = new Task({
+            title: 'Test task', // ***req.body.title
+            desc: 'This is another test task.', // ***req.body.desc
+            status: 'To do' // ***req.body.status
+        });
 
-        try {
-            const result = await tasksCollection.insertOne(task);
-            console.log(`Result of creating a task ${result}`);
-            res.status(201).json({ message: 'Task created successfully' });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: 'Error creating task' });
-        };
+        // save new task to database
+        const savedTask = await task.save();
+        res.status(201).json(savedTask);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error creating task' });
     };
 };
 
-function deleteTask(tasksCollection) {
-    return async (req, res) => {
-        try {
-            const taskId = req.params.id;
-            const result = await tasksCollection.deleteOne({ _id: new ObjectId(taskId) });
-            console.log(result);
+async function deleteTask(req, res) {
+    try {
+        const taskId = req.params.id;
+        const deletedTask = await Task.findByIdAndDelete(taskId);
+        console.log(deletedTask);
 
-            if(result.deletedCount === 1) {
-                res.status(204).json({ message: 'Task deleted successflly' })
-            }
-
-            if (result.deletedCount === 0) {
-                return res.status(404).json({ error: 'Task not found' });
-            }
-        } catch(err) {
-            console.error(err);
-            res.status(500).json({ error: 'Error deleting task' })
+        if (!deletedTask) {
+            return res.status(404).json({ message: 'Task not found' });
         }
+
+        res.status(204).json({ message: 'Task deleted successflly' })
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error deleting task' })
+    }
+};
+
+async function readTasks(req, res) {
+    try {
+        // find all tasks in Task collection
+        const tasks = await Task.find();
+        res.status(200).json(tasks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching tasks' });
     };
 };
 
-function readTasks(tasksCollection) {
-    return async (req, res) => {
-        try {
-            const tasks = await tasksCollection.find().toArray()
-            res.status(200).json(tasks);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: 'Error fetching tasks' });
+async function updateTask(req, res, field) {
+    const taskId = req.params.id;
+    const updateData = { [field]: req.body[field] }
+    
+    try {
+        const updatedTask = await Task.findByIdAndUpdate(taskId, updateData, { new:true })
+        if(!updatedTask) {
+            return res.status(404).json({ message: 'Task not found' })
         };
-    };
+        res.status(200).json(updatedTask);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error updating task' });
+    }
 };
 
-function updateTask(tasksCollection, property) {
-    return async (req, res) => {
-        try {
-            const taskId = req.params.id;
-            
-            let result;
-            switch(property) {
-                case 'status':
-                    result = handleStatusUpdate(tasksCollection, taskId)
-                    break;
-                case 'title':
-                    result = handleTitleUpdate(tasksCollection, taskId)
-                    break;
-                case 'desc':
-                    result = handleDescUpdate(tasksCollection, taskId)
-            }
-
-            console.log(result);
-            res.status(200).json({ message: 'Task updated successfully' });
-        } catch(err) {
-            console.error(err);
-            res.status(500).json({ message: 'Error updating task'    
-            });
-        }
-    } 
-};
-
-async function handleStatusUpdate(tasksCollection, taskId) {
-    // *** get new status from req body once there is a form
-    const status = 'In Progress';
-    const result = await tasksCollection.updateOne(
-        { _id: new ObjectId(taskId) }, // Find the task by _id
-        { $set: { status } }  // Set the new status
-    );
-    return result;
-};
-
-async function handleTitleUpdate(tasksCollection, taskId) {
-    // *** get new title from req body once there is a form
-    const title = 'Updated Title';
-    const result = await tasksCollection.updateOne(
-        { _id: new ObjectId(taskId) }, // Find the task by _id
-        { $set: { title } }  // Set the new status
-    );
-    return result;
-};
-
-async function handleDescUpdate(tasksCollection, taskId) {
-    // *** get new desc from req body once there is a form
-    const desc = 'Updated Description';
-    const result = await tasksCollection.updateOne(
-        { _id: new ObjectId(taskId) }, // Find the task by _id
-        { $set: { desc } }  // Set the new status
-    );
-    return result;
-};
+startServer();
