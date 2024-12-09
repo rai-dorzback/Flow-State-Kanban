@@ -1,28 +1,26 @@
-# Kanban Board App
+# Kanban Board 
 
-This project is focused on building the backend of a Kanban board app using **Node.js**, **Express**, and **MongoDB**. Once the backend is complete, I will integrate it with the frontend, which I have already started building in [this repository](https://github.com/raisa-d/KanbanBoard) using **React** and **TailwindCSS**.
-
-I chose to begin the backend development from scratch as I am currently learning backend technologies and wanted a clean start before integrating them with the frontend.
+Kanban Board allows users to create, manage, and organize tasks into customizable columns. Users can add new tasks, move them between columns (e.g., To Do, In Progress, Done) using drag-and-drop, and customize each column’s color. The app uses React for dynamic UI updates and local storage to persist data across sessions. This project demonstrates fundamental React concepts like state management, event handling, and working with local storage for persistence.
 
 ---
 
 ## Table of Contents
-1. [Technologies Used](#technologies-used)
-2. [Development Stage](#development-stage)
-    - [Dec 7, 2024](#dec-7-2024)
-    - [Dec 6, 2024](#dec-6-2024)
-3. [Lessons Learned](#lessons-learned)
-4. [Optimizations](#optimizations)
-5. [Future Plans](#future-plans)
-5. [Contact](#contact)
-
----
+- [Technologies Used](#technologies-used)
+- [Features](#features)
+- [Development Stage](#development-stage)
+- [Optimizations](#optimizations)
+- [Lessons Learned](#lessons-learned)
+- [Resources](#resources)
+- [Contact](#contact)
 
 ## Technologies Used
 
 ### Frontend
 - React
+- Vite
 - TailwindCSS
+- Javascript
+- HTML
 
 ### Backend
 - Node.js
@@ -33,8 +31,19 @@ I chose to begin the backend development from scratch as I am currently learning
 - **Design:** Figma
 - **Testing:** Postman
 - **Version Control:** Git
+<!-- Git -->
+<a href="https://git-scm.com/" target="_blank" rel="noreferrer"> 
+  <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> 
+</a>
 
----
+## Features
+- Create, Read, Update, and Delete Tasks
+- Create multiple Kanban boards
+- Drag-and-Drop: Move tasks between columns (e.g., To Do, In Progress, Done) using drag-and-drop functionality.
+- Customizable Columns: Change the background color of each column to personalize the board.
+- Persistence: Tasks and column data are saved in MongoDB, so users' progress is preserved.
+- Secret Mode: Some secret color themes (To be revealed later)
+- Mobile-first Design: The app is built to be responsive and works on both desktop and mobile devices.
 
 ## Development Stage
 ### **Dec 8, 2024**
@@ -86,7 +95,7 @@ In working on the delete functionality, I ran into an issue with parsing the id 
 ---
 
 ### **Dec 6, 2024**
-I have started to learn Node,js, Express, and MongoDB so I will be switching to working on the backend. Instead of local storage, I am building an API that interfaces with the database. After, I will merge the backend with the frontend.
+I have started to learn Node,js, Express, and MongoDB so I will be switching to working on the backend. Instead of local storage, I am building an API that interfaces with the database. I chose to begin the backend development from scratch as I am currently learning backend technologies and wanted a clean start before integrating them with the frontend. 
 
 #### Reflection on CRUD Functionality:
 - **Create (POST):** Add tasks to the board.
@@ -181,33 +190,31 @@ Next Steps
 - Add drag and drop functionality
 - Refine styling
 
----
+## Optimizations
+- Add styling and responsive design using **TailwindCSS**.
+- Add a submit/cancel button for the title editing.
+- Add color picker for each column background, put picker to right of column title
+- Toggle dark/light/charcuterie/Y2k mode
+- Add color picker to NewTaskForm so user can pick color of each task as well
+- Add a secret easter egg charcuterie board mode. All the tasks will become cheese/boards will be wooden, etc.
+- Add team-collaboration/assign tasks to a person
+- Allow users to make more columns and rename the columns
+- Add user authentication/login
 
 ## Lessons Learned
-When I initially began building the Kanban board app using **React**, I had no experience with backend development. Now, after learning backend technologies, I’ve decided to start fresh and focus on building the backend first. Once the backend is complete, I’ll integrate the frontend from my [original repository](https://github.com/raisa-d/KanbanBoard).
-
-I made a key mistake of forgetting to put a forward slash at the beginning of an endpoint.
+- Re-familiarized myself with the basics of **React**.
+- Gained experience in breaking down a project into components and understanding how to structure the app for better maintainability.
+- When I initially began building the Kanban board app using **React**, I had no experience with backend development. Now, after learning backend technologies, I’ve decided to start fresh and focus on building the backend first and integrate it with the frontend later.
+- I made a key mistake of forgetting to put a forward slash at the beginning of an endpoint-- will not make this one again!
 
 #### Notes:
 - Any comments in the code prefixed with three stars (**`***`**) indicate areas that need further implementation or revisiting.
 
----
-
-## Optimizations
-- 🛠️ **Planned Feature:** *Charcuterie Board Secret Mode* (Details to be revealed later!)
-
----
-
-## Future Plans
-1. Complete backend CRUD operations, including:
-   - Reading tasks
-   - Creating tasks
-   - Updating tasks
-   - Deleting tasks
-2. Refactor code for scalability and performance.
-3. Integrate the backend with the React-based frontend.
-4. Add styling and responsive design using **TailwindCSS**.
-5. Explore additional features, such as authentication or drag-and-drop task movement.
+## Resources
+- [Tailwind Docs](https://tailwindcss.com/docs/)
+- [React Icons](https://react-icons.github.io/react-icons/)
+- [React Docs](https://react.dev/)
+- [Mongoose Docs](https://mongoosejs.com/docs/guide.html)
 
 ## Contact
 <p> 
