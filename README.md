@@ -52,6 +52,7 @@ Next steps:
 - Have boardview dynamically read/display title from database
 - Give user ability to change title (using database)
 - Consider changing endpoints to have query parameters (i.e., ?q=) instead of just longer and longer paths (how it is now). Model it off of apis like cocktailDB
+- Integrate client and server readmes
 
 ### **Dec 7, 2024**
 #### Progress
