@@ -29,8 +29,8 @@ const Column = mongoose.model('Column', columnSchema);
 const Board = mongoose.model('Board', boardSchema);
 
 // Destructure ObjectId from mongodb
-const { ObjectId } = require('mongodb'); // 
-const MongoClient = require('mongodb').MongoClient;
+// const { ObjectId } = require('mongodb'); 
+// const MongoClient = require('mongodb').MongoClient;
 const password = encodeURIComponent(process.env.DB_PASSWORD);
 const uri = `mongodb+srv://trikru:${password}@cluster0.atp5l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
@@ -55,13 +55,14 @@ async function startServer() {
         // enable CORS for all requests
         app.use(cors());
 
-        // **in future, serve up index.html
         app.get('/', (req, res) => {
             res.send('Server is running!')
         });
 
         // get all tasks
         app.get('/api/tasks', (req, res) => readTasks(req, res));
+        // get all boards
+        app.get('/api/boards', (req, res) => readBoards(req, res));
 
         // create new board
         app.post('/api/boards/create', (req, res) => createBoard(req, res));
@@ -70,7 +71,6 @@ async function startServer() {
 
         // PATCH request to update board title
         app.patch('/api/boards/title/:id', (req, res) => updateBoardTitle(req, res));
-
         // PATCH requests to update task
         app.patch('/api/tasks/status/:id', (req, res) => updateTask(req, res, 'status'));
         app.patch('/api/tasks/title/:id', (req, res) => updateTask(req, res, 'title'));
@@ -172,6 +172,16 @@ async function readTasks(req, res) {
         res.status(500).json({ message: 'Error fetching tasks' });
     };
 };
+
+async function readBoards(req, res) {
+    try {
+        const boards = await Board.find();
+        res.status(200).json(boards);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching boards' });
+    }
+}
 
 async function updateTask(req, res, field) {
     const taskId = req.params.id;

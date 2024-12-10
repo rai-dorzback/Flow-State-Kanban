@@ -39,6 +39,23 @@ Other Tools
 - Mobile-first Design: The app is built to be responsive and works on both desktop and mobile devices.
 
 ## Development Stage
+**Dec 10, 2024**
+Priorities today: 
+- Display existing board titles on Homepage ✅
+- Add link to board on Homepage - did this using Link from react-router-dom ✅
+- Basic styling for homepage ✅
+- Have BoardView dynamically read/display title from database
+- Fix bug with creating new boards
+
+Next steps:
+- Add functionality to add a new task
+- Have BoardView dynamically display columns and tasks from database into correct columns
+
+Errors encountered:
+- Tried to fetch board titles in Homepage.jsx. When i use link with http, we get back a cors object. when I use link with https, we just get errors. 
+- SOLUTION: I forgot to use response.json() on the response, which caused the error. Now, the object is returning, BUT it runs infinitely- i think because I set the dependency array to boardTitles. I changed the dependency array to be empty, and it solved the infinite loop.
+- Got an error when trying to make a POST request to create a new board: Homepage.jsx:20 POST https://localhost:8000/api/boards/create net::ERR_SSL_PROTOCOL_ERROR
+
 **Dec 8, 2024**
 -Today, I integrated the backend with the React frontend, enabling the frontend to connect to the API in `server.js`. I used `create vite@latest` to quickly set up the boilerplate.
 - I decided to transition from using vanilla MongoDB to **Mongoose**, as it provides a much cleaner and more efficient way to define schemas and models, especially when it comes to updating tasks, boards, and columns.
