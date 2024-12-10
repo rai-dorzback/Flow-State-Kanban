@@ -19,8 +19,8 @@ function EditableTitle({ boardTitle, onChange, onSubmit }) {
     )
 }
 
-const KanbanBoard = ({ children }) => {
-    const [boardTitle, setBoardTitle] = useState(() => localStorage.getItem('boardTitle') || 'My Kanban Board');
+const KanbanBoard = ({ children, board }) => {
+    const [boardTitle, setBoardTitle] = useState(board.title);
     const [isEditing, setIsEditing] = useState(false);
 
     // useEffect to store new title in local storage. re-render if boardTitle changes based on input

@@ -44,17 +44,23 @@ Priorities today:
 - Display existing board titles on Homepage ✅
 - Add link to board on Homepage - did this using Link from react-router-dom ✅
 - Basic styling for homepage ✅
-- Have BoardView dynamically read/display title from database
-- Fix bug with creating new boards
+- Dynamically load Columns from database ✅
+- Dynamically display Kanbanboard title from database
+  - Get ID from url using useParams from react-router-dom ✅
+  - Set up state to store board data in BoardView ✅
+  - Fetch board data from database using useEffect on page mount ✅
+  - Dynamically display board title ✅
+- Add ability to change kanban title
 
 Next steps:
 - Add functionality to add a new task
 - Have BoardView dynamically display columns and tasks from database into correct columns
+- Add functionality to delete boards from Homepage
+- Add loading spinners to pages
 
 Errors encountered:
 - Tried to fetch board titles in Homepage.jsx. When i use link with http, we get back a cors object. when I use link with https, we just get errors. 
 - SOLUTION: I forgot to use response.json() on the response, which caused the error. Now, the object is returning, BUT it runs infinitely- i think because I set the dependency array to boardTitles. I changed the dependency array to be empty, and it solved the infinite loop.
-- Got an error when trying to make a POST request to create a new board: Homepage.jsx:20 POST https://localhost:8000/api/boards/create net::ERR_SSL_PROTOCOL_ERROR
 
 **Dec 8, 2024**
 -Today, I integrated the backend with the React frontend, enabling the frontend to connect to the API in `server.js`. I used `create vite@latest` to quickly set up the boilerplate.

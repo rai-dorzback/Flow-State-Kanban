@@ -58,11 +58,12 @@ async function startServer() {
         app.get('/', (req, res) => {
             res.send('Server is running!')
         });
-
         // get all tasks
         app.get('/api/tasks', (req, res) => readTasks(req, res));
         // get all boards
         app.get('/api/boards', (req, res) => readBoards(req, res));
+        // get 1 boards data
+        app.get('/api/board/:id', (req, res) => readBoard(req, res));
 
         // create new board
         app.post('/api/boards/create', (req, res) => createBoard(req, res));
@@ -180,8 +181,19 @@ async function readBoards(req, res) {
     } catch(err) {
         console.error(err);
         res.status(500).json({ message: 'Error fetching boards' });
-    }
-}
+    };
+};
+
+async function readBoard(req, res) {
+    try {
+        const boardId = req.params.id;
+        const board = await Board.findById(boardId);
+        res.status(200).json(board);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching board' });
+    };
+};
 
 async function updateTask(req, res, field) {
     const taskId = req.params.id;
