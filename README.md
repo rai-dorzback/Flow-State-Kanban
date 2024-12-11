@@ -50,7 +50,8 @@ Priorities today:
   - Set up state to store board data in BoardView ✅
   - Fetch board data from database using useEffect on page mount ✅
   - Dynamically display board title ✅
-- Add ability to change kanban title
+- Add ability to change kanban title ✅
+  - Added updateTitleInDB() function to make a fetch request (PATCH) to KanbanBoard.jsx
 
 Next steps:
 - Add functionality to add a new task

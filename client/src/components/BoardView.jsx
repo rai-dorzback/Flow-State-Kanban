@@ -20,7 +20,7 @@ export default function BoardView() {
             }
         };
         fetchBoard();
-    }, []);
+    }, [boardId]);
 
     if(!board) {
         return <div>Loading...</div>
@@ -28,20 +28,19 @@ export default function BoardView() {
 
     return (
         <>
-        <div className="text-white">
-            <KanbanBoard board={board} setBoard={setBoard}>
-                {board.columns.map(column => (
-                    <Column 
-                        setOpenModal={setOpenModal}
-                        key={column._id}
-                        title={column.title}></Column>
-                ))}
-            </KanbanBoard>
-            {openModal && (
-            <NewTaskForm setOpenModal={setOpenModal}></NewTaskForm>
-            )}
-        </div>
-        {openModal && <NewTaskForm setOpenModal={setOpenModal} />}
+            <div className="text-white">
+                <KanbanBoard board={board} setBoard={setBoard}>
+                    {board.columns.map(column => (
+                        <Column 
+                            setOpenModal={setOpenModal}
+                            key={column._id}
+                            title={column.title}></Column>
+                    ))}
+                </KanbanBoard>
+                {openModal && (
+                <NewTaskForm setOpenModal={setOpenModal}></NewTaskForm>
+                )}
+            </div>
         </>
     )
 }

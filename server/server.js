@@ -108,7 +108,11 @@ async function createBoard(req, res) {
 
 async function updateBoardTitle(req, res) {
     const boardId = req.params.id;
-    const newTitle = req.body.title || "My Kanban Board";
+    const newTitle = req.body.title;
+
+    if (!newTitle) {
+        return res.status(400).json({ message: 'Title is required' });
+    }
     
     try { 
         const updatedBoard = await Board.findByIdAndUpdate(

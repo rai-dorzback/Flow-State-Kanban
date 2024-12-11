@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useEffect } from "react";
 import { MdModeEdit } from "react-icons/md";
 
 function EditableTitle({ boardTitle, onChange, onSubmit }) {
@@ -7,38 +6,53 @@ function EditableTitle({ boardTitle, onChange, onSubmit }) {
         <form onSubmit={onSubmit}>
             <label>
                 <input 
-                type="text" 
-                name="boardTitle" 
-                placeholder="My Kanban Board" 
+                type="text"
+                name="boardTitle"
                 id="boardTitle"
-                value={boardTitle}
+                placeholder="New Title"
                 onChange={onChange}
+                value={boardTitle}
                 className="bg-black border-b border-white text-lg my-3 text-center w-full"/>
             </label>
         </form>
     )
 }
 
-const KanbanBoard = ({ children, board }) => {
+const KanbanBoard = ({ children, board, setBoard }) => {
     const [boardTitle, setBoardTitle] = useState(board.title);
     const [isEditing, setIsEditing] = useState(false);
-
-    // useEffect to store new title in local storage. re-render if boardTitle changes based on input
-    useEffect(() => {
-        localStorage.setItem('boardTitle', boardTitle)
-    }, [boardTitle]);
     
     function handlePencilClick() {
         setIsEditing(true);
     }
 
-    function handleTitleSubmit(e) {
-        e.preventDefault();
-        setIsEditing(false);
-    }
-
     function handleTitleChange(e) {
         setBoardTitle(e.target.value);
+    }
+
+    async function updateTitleInDB() {
+        try {
+            const response = await fetch(`http://localhost:8000/api/boards/title/${board._id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: boardTitle }),
+            });
+    
+            if (response.ok) {
+                const updatedBoard = await response.json();
+                setBoard(updatedBoard); // Update parent component state with new title
+                setIsEditing(false);
+            } else {
+                console.error('Failed to update title');
+            }
+        } catch (err) {
+            console.error('Error updating title:', err);
+        }
+    }
+
+    function handleTitleSubmit(e) {
+        e.preventDefault();
+        updateTitleInDB()
     }
 
     return (
@@ -46,7 +60,11 @@ const KanbanBoard = ({ children, board }) => {
             <div className="flex items-center justify-center">
                 {/* if user is editing title, show form else show read-only version */}
                 { isEditing ? (
-                    <EditableTitle boardTitle={boardTitle} onChange={handleTitleChange} onSubmit={handleTitleSubmit}/>
+                    <EditableTitle 
+                        boardTitle={boardTitle} 
+                        onChange={handleTitleChange} 
+                        onSubmit={handleTitleSubmit}
+                    />
                 ) : (
                     <h1 className="border-b border-white text-lg my-3">{ boardTitle }</h1>  
                 )}
