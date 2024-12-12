@@ -1,6 +1,6 @@
 # Kanban Board 
 
-Kanban Board allows users to create, manage, and organize tasks into customizable columns. Users can add new tasks, move them between columns (e.g., To Do, In Progress, Done) using drag-and-drop, and customize each column’s color. The app uses React for dynamic UI updates and local storage to persist data across sessions. This project demonstrates fundamental React concepts like state management, event handling, and working with local storage for persistence.
+Kanban Board allows users to create, manage, and organize tasks into customizable columns. Users can add new tasks, move them betIen columns (e.g., To Do, In Progress, Done) using drag-and-drop, and customize each column’s color. The app uses React for dynamic UI updates and local storage to persist data across sessions. This project demonstrates fundamental React concepts like state management, event handling, and working with local storage for persistence.
 
 ## Table of Contents
 - [Technologies Used](#technologies-used)
@@ -32,13 +32,34 @@ Other Tools
 ## Features
 - Create, Read, Update, and Delete Tasks
 - Create multiple Kanban boards
-- Drag-and-Drop: Move tasks between columns (e.g., To Do, In Progress, Done) using drag-and-drop functionality.
+- Drag-and-Drop: Move tasks betIen columns (e.g., To Do, In Progress, Done) using drag-and-drop functionality.
 - Customizable Columns: Change the background color of each column to personalize the board.
 - Persistence: Tasks and column data are saved in MongoDB, so users' progress is preserved.
 - Secret Mode: Some secret color themes (To be revealed later)
 - Mobile-first Design: The app is built to be responsive and works on both desktop and mobile devices.
 
 ## Development Stage
+**Dec 11, 2024**
+Today, I achieved dynamically rendering tasks in their appropriate columns (To Do, In Progress, Done)!  ✅
+I started working on making a POST request from NewTaskForm to create a new task, but ran into some issues that I will have to tackle next time.
+Thinking out loud:
+Column.jsx:
+- I need to make it so when a new task is created, it is saved into a specific board and column. This will help with rendering and with updating the database when the user moves a task to another column/changes its status. 
+- I have added state for the complete tasks list and the tasks in each individual column, which will be used to update which tasks are where both in where they're rendered locally and in the DB (/api/tasks/status/:id endpoint to update task status). 
+Server.js
+- I will modify the createTask() function in server.js, it will take the boardID from the URl query parameters to know which board to save it to. It will be saved to the correct column based on the board status.
+General (Important)
+- Consider passing children props to Column and conditionally rendering the TaskCards directly from BoardView, since that's where the app is reading the board data from /api/board/:id. That way, I won't have to pass the tasks down into Column. If I do this, I will probably have to lift the state (toDoTasks, inProgTasks, doneTasks) up from Column to BoardView. I won't need a general tasksList state in BoardView quite yet since I will be able to access the tasks from board.tasks. In fact, I won't need a tasksList state at all once the tasks are being read directly from their columns in the database. I'm just doing that right now because currently the tasks are saved in the database loose and unconnected to any board.
+
+Next Steps
+- Follow my thought process about adding new tasks that I wrote Dec 11
+- Add functionality to add a new task
+  - Make POST fetch request from /api/create
+  - Tie the task to the board it's in and the columns it belogs to
+  - May need to change the endpoint so that tasks are specific to the board they're in like api/:boardId/tasks
+  - Change backend to make sure tasks are added to the right board/column
+- Assure BoardView dynamically displays columns and tasks from database into correct columns
+
 **Dec 10, 2024**
 Priorities today: 
 - Display existing board titles on Homepage ✅
@@ -51,7 +72,7 @@ Priorities today:
   - Fetch board data from database using useEffect on page mount ✅
   - Dynamically display board title ✅
 - Add ability to change kanban title ✅
-  - Added updateTitleInDB() function to make a fetch request (PATCH) to KanbanBoard.jsx
+  - Added updateTitleInDB() function to make a fetch request (PATCH) to KanbanBoard.jsx ✅
 
 Next steps:
 - Add functionality to add a new task
@@ -60,7 +81,7 @@ Next steps:
 - Add loading spinners to pages
 
 Errors encountered:
-- Tried to fetch board titles in Homepage.jsx. When i use link with http, we get back a cors object. when I use link with https, we just get errors. 
+- Tried to fetch board titles in Homepage.jsx. When i use link with http, I get back a cors object. when I use link with https, I just get errors. 
 - SOLUTION: I forgot to use response.json() on the response, which caused the error. Now, the object is returning, BUT it runs infinitely- i think because I set the dependency array to boardTitles. I changed the dependency array to be empty, and it solved the infinite loop.
 
 **Dec 8, 2024**
@@ -145,11 +166,11 @@ Next Steps
 
 **Nov 24, 2024:**
 - First, I decided to move AddNewTask from its own jsx file into Column.jsx since it was a small function that is only used in the Column component.
-- I reread some of the React docs while I thought about how I want to pass in the various tasks/task cards into each column. I have decided to set a prop "children" for Column and then pass in the tasks object/task cards as the children. The tasks will conditionally render based on which column its supposed to be in. Using a children prop makes it so we don't need to know what will be inside each Column.
+- I reread some of the React docs while I thought about how I want to pass in the various tasks/task cards into each column. I have decided to set a prop "children" for Column and then pass in the tasks object/task cards as the children. The tasks will conditionally render based on which column its supposed to be in. Using a children prop makes it so I don't need to know what will be inside each Column.
 
 **Nov 23, 2024:**
 **Event Handling & Modal State**
-- Went back to the React docs to refamiliarize myself with event handling.
+- Int back to the React docs to refamiliarize myself with event handling.
 - I was still deciding where the best place is to store the `openModal` state for adding a new task.
 - Realized I needed to add an Add/Close button to the new task form and style it as a modal.
 - After considering different approaches, I decided that the `NewTaskForm` will be nested within the `App` component. Since the modal is a global feature in the app, the `openModal` state will live in `App`.
@@ -207,7 +228,7 @@ Next Steps
 - Add a submit/cancel button for the title editing.
 - Add color picker for each column background, put picker to right of column title
 - Toggle dark/light/charcuterie/Y2k mode
-- Add color picker to NewTaskForm so user can pick color of each task as well
+- Add color picker to NewTaskForm so user can pick color of each task as Ill
 - Add a secret easter egg charcuterie board mode. All the tasks will become cheese/boards will be wooden, etc.
 - Add team-collaboration/assign tasks to a person
 - Allow users to make more columns and rename the columns
@@ -230,7 +251,7 @@ Next Steps
 ## Contact
 <p> 
   <a href="https://raisadorzback.netlify.app/" target="blank">
-    <img src="https://img.shields.io/badge/Website-563d7c?&style=for-the-badge" alt="Website">
+    <img src="https://img.shields.io/badge/Ibsite-563d7c?&style=for-the-badge" alt="Ibsite">
   </a>
   <a href="https://www.linkedin.com/in/raisa-d/">
     <img src="https://img.shields.io/badge/LinkedIn-046E6D?logo=linkedin&style=for-the-badge">

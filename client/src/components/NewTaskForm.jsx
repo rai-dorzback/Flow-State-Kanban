@@ -4,25 +4,37 @@ import Button from "./Button.jsx";
 const NewTaskForm = ({ setOpenModal }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
-    // ***CONTINUE WORKING HERE
-    // if tasks array exists in local storage
-      // add task object to tasks array
-    // else create tasks array and initialize it with current task
-    
-    // console.log('add new task...')
-    // const task = {
-    //   id: '',
-    //   title: '',
-    //   description: '', 
-    //   status: 'to do'
-    // };
-  }
+    e.preventDefault();
+    setLoading(true);
+    addTaskToDB();
+  };
+
+  async function addTaskToDB() {
+    try {
+      const response = await fetch('http://localhost:8000/api/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          title: taskTitle, 
+          desc: taskDesc
+        })
+      });
+      if(!response.ok) {
+        throw new Error('Failed to add new task')
+      } else {
+        console.log(response)
+      }
+    } catch(err) {
+      console.error(`Error creating new task: ${err}`);
+    };
+  };
 
   function handleCloseModal() {
     setOpenModal(false);
-  }
+  };
 
   return (
     <div className="fixed top-0 bg-black bg-opacity-90 w-full h-full flex items-center justify-center">
@@ -39,6 +51,7 @@ const NewTaskForm = ({ setOpenModal }) => {
                   name="title" 
                   className="bg-black border border-white rounded-lg py-1 px-3" 
                   onChange={e => setTaskTitle(e.target.value)}
+                  required
                   placeholder="I.e., Wireframe website layout"/>
             </div>
             {/* Description */}
@@ -62,4 +75,4 @@ const NewTaskForm = ({ setOpenModal }) => {
   )
 };
 
-export default NewTaskForm
+export default NewTaskForm;

@@ -141,6 +141,7 @@ async function createTask(req, res) {
             status: req.body.status
         });
 
+        // *** SAVE TASK SPECIFICALLY INSIDE ITS RIGHTFUL BOARD - CAN TAKE BOARD ID OUT OF URL TO KNOW WHICH ONE TO SAVE TO
         // save new task to database
         const savedTask = await task.save();
         res.status(201).json(savedTask);
