@@ -41,6 +41,7 @@ Other Tools
 ## Development Stage
 **Dec 11, 2024**
 Today, I achieved dynamically rendering tasks in their appropriate columns (To Do, In Progress, Done)!  ✅
+Once I change how tasks are saved in the database, I will conditionally render them based on what column they're in in the databse instead of based on the task status and column title (tasks are currently all in a general pool of tasks in the database, not specifically saved in any one).
 I started working on making a POST request from NewTaskForm to create a new task, but ran into some issues that I will have to tackle next time.
 Thinking out loud:
 Column.jsx:
