@@ -28,9 +28,6 @@ const Task = mongoose.model('Task', taskSchema);
 const Column = mongoose.model('Column', columnSchema);
 const Board = mongoose.model('Board', boardSchema);
 
-// Destructure ObjectId from mongodb
-// const { ObjectId } = require('mongodb'); 
-// const MongoClient = require('mongodb').MongoClient;
 const password = encodeURIComponent(process.env.DB_PASSWORD);
 const uri = `mongodb+srv://trikru:${password}@cluster0.atp5l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
