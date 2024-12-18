@@ -37,23 +37,36 @@ Other Tools
 - Persistence: Tasks and column data are saved in MongoDB, so users' progress is preserved.
 - Secret Mode: Some secret color themes (To be revealed later)
 - Mobile-first Design: The app is built to be responsive and works on both desktop and mobile devices.
+- Figure out why the useEffect in Column.jsx is sending the tasks a lot of times
 
 ## Development Stage
+**Dec 18, 2024**
+Today's priorities:
+- Figure out how tasks will be saved so that they are in the right column and board based on where they've been added
+- Change the conditional rendering in Column.jsx to reflect the way the data is now saved. It should be much easier to just render the tasks that are found in that column
+  - Pass Task Cards as children props to Column.jsx and lift state up to BoardView
+- Finish functionality in NewTaskForm.jsx to add a task to current board
+  - in server.js, modify createTask() as written in notes on Dec 11
+- Work on how you will move the tasks from column to column when user does & then allow user to drag/drop cards
+
 **Dec 11, 2024**
 Today, I achieved dynamically rendering tasks in their appropriate columns (To Do, In Progress, Done)!  ✅
 Once I change how tasks are saved in the database, I will conditionally render them based on what column they're in in the databse instead of based on the task status and column title (tasks are currently all in a general pool of tasks in the database, not specifically saved in any one).
 I started working on making a POST request from NewTaskForm to create a new task, but ran into some issues that I will have to tackle next time.
+
 Thinking out loud:
+
 Column.jsx:
 - I need to make it so when a new task is created, it is saved into a specific board and column. This will help with rendering and with updating the database when the user moves a task to another column/changes its status. 
 - I have added state for the complete tasks list and the tasks in each individual column, which will be used to update which tasks are where both in where they're rendered locally and in the DB (/api/tasks/status/:id endpoint to update task status). 
+
 Server.js
 - I will modify the createTask() function in server.js, it will take the boardID from the URl query parameters to know which board to save it to. It will be saved to the correct column based on the board status.
 General (Important)
 - Consider passing children props to Column and conditionally rendering the TaskCards directly from BoardView, since that's where the app is reading the board data from /api/board/:id. That way, I won't have to pass the tasks down into Column. If I do this, I will probably have to lift the state (toDoTasks, inProgTasks, doneTasks) up from Column to BoardView. I won't need a general tasksList state in BoardView quite yet since I will be able to access the tasks from board.tasks. In fact, I won't need a tasksList state at all once the tasks are being read directly from their columns in the database. I'm just doing that right now because currently the tasks are saved in the database loose and unconnected to any board.
 
 Next Steps
-- Follow my thought process about adding new tasks that I wrote Dec 11
+- Follow my thought process about adding new tasks that I wrote from today
 - Add functionality to add a new task
   - Make POST fetch request from /api/create
   - Tie the task to the board it's in and the columns it belogs to
