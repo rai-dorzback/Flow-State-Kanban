@@ -226,6 +226,7 @@ Next Steps
 
 ## Optimizations
 - Add styling and responsive design using **TailwindCSS**.
+- Use framer motion to make smooth animations in the design
 - Add a submit/cancel button for the title editing.
 - Add color picker for each column background, put picker to right of column title
 - Toggle dark/light/charcuterie/Y2k mode
