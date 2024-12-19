@@ -14,7 +14,7 @@ export default function BoardView() {
     useEffect(() => {
         async function fetchBoard() {
             try {
-                let response = await fetch(`http://localhost:8000/api/board/${boardId}`);
+                let response = await fetch(`http://localhost:8000/api/${boardId}`);
                 let result = await response.json();
                 setBoard(result);
             } catch(err) {

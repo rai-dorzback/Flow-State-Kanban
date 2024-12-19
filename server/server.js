@@ -58,21 +58,21 @@ async function startServer() {
         // get all boards
         app.get('/api/boards', (req, res) => readBoards(req, res));
         // get 1 boards data
-        app.get('/api/board/:id', (req, res) => readBoard(req, res));
+        app.get('/api/:boardId', (req, res) => readBoard(req, res));
 
         // create new board
-        app.post('/api/boards/create', (req, res) => createBoard(req, res));
+        app.post('/api/board/create', (req, res) => createBoard(req, res));
         // create new task
         app.post('/api/:boardId/createTask', (req, res) => createTask(req, res));
 
         // PATCH request to update board title
-        app.patch('/api/boards/title/:id', (req, res) => updateBoardTitle(req, res));
+        app.patch('/api/:boardId/title', (req, res) => updateBoardTitle(req, res));
         // PATCH requests to update task
-        app.patch('/api/tasks/status/:id', (req, res) => updateTask(req, res, 'status'));
-        app.patch('/api/tasks/title/:id', (req, res) => updateTask(req, res, 'title'));
-        app.patch('/api/tasks/desc/:id', (req, res) => updateTask(req, res, 'desc'));
+        app.patch('/api/:boardId/:taskId/status', (req, res) => updateTask(req, res, 'status'));
+        app.patch('/api/:boardId/:taskId/title', (req, res) => updateTask(req, res, 'title'));
+        app.patch('/api/:boardId/:taskId/desc', (req, res) => updateTask(req, res, 'desc'));
 
-        app.delete('/api/tasks/:id', (req, res) => deleteTask(req, res));
+        app.delete('/api/:boardId/:taskId', (req, res) => deleteTask(req, res));
 
         // listen on port
         app.listen(PORT, () => { console.log(`Server is running on ${PORT}`) });
@@ -102,7 +102,7 @@ async function createBoard(req, res) {
 };
 
 async function updateBoardTitle(req, res) {
-    const boardId = req.params.id;
+    const boardId = req.params.boardId;
     const newTitle = req.body.title;
 
     if (!newTitle) {
@@ -185,7 +185,7 @@ async function readBoards(req, res) {
 
 async function readBoard(req, res) {
     try {
-        const boardId = req.params.id;
+        const boardId = req.params.boardId;
         const board = await Board.findById(boardId);
 
         if (!board) {
@@ -200,19 +200,40 @@ async function readBoard(req, res) {
 };
 
 async function updateTask(req, res, field) {
-    const taskId = req.params.id;
-    const updateData = { [field]: req.body[field] }
+    const boardId = req.params.boardId;
+    const taskId = req.params.taskId;
+    const updatedData = { [field]: req.body[field] }
     
     try {
-        const updatedTask = await Task.findByIdAndUpdate(taskId, updateData, { new:true })
-        if(!updatedTask) {
-            return res.status(404).json({ message: 'Task not found' })
-        };
-        res.status(200).json(updatedTask);
+        const board = await Board.findById(boardId);
+
+        if (!board) {
+            return res.status(404).json({ message: 'Board not found' });
+        }
+
+        let taskUpdated = false;
+        for(const column of board.columns) {
+            const colTasks = column.tasks
+            // find index of task in the column so we can manipulate it
+            const taskIndex = colTasks.findIndex(task => task._id.toString() === taskId);
+
+            if(taskIndex !== -1) {
+                colTasks[taskIndex] = { ...colTasks[taskIndex].toObject(), ...updatedData };
+
+                taskUpdated = true;
+                break;
+            }
+        }
+
+        if(!taskUpdated) {
+            res.status(404).json({ message: 'Task not found, so it was not updated' });
+        }
+
+        const updatedBoard = await board.save();
+
+        res.status(200).json(updatedBoard);
     } catch(err) {
         console.error(err);
         res.status(500).json({ message: 'Error updating task' });
     }
 };
-
-startServer();

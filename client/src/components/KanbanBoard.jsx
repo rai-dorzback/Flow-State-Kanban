@@ -32,7 +32,7 @@ const KanbanBoard = ({ children, board, setBoard }) => {
 
     async function updateTitleInDB() {
         try {
-            const response = await fetch(`http://localhost:8000/api/boards/title/${board._id}`, {
+            const response = await fetch(`http://localhost:8000/api/${board._id}/title`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ title: boardTitle }),

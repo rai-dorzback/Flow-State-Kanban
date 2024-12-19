@@ -41,12 +41,15 @@ Other Tools
 
 ## Development Stage
 **Dec 18, 2024**
-- Figure out how tasks will be saved so that they are in the right column and board based on where they've been added ✅
-  - Now, the boardId is taken out of the query parameter and used to figure out which board to update. It will always update that board's "To Do" column with a new task and then users will be able to move them from there.
-- Change the conditional rendering in Column.jsx to reflect the way the data is now saved. It should be much easier to just render the tasks that are found in that column ✅
-  - Pass Task Cards as children props to Column.jsx, get the tasks from board in BoardView. I ended up deleting the endpoint and function associated with readTasks because it's no longer needed now that tasks are saved within columns within boards. Now, we just read the board and get the tasks out of the board.
+- What I did: Figure out how tasks will be saved so that they are in the right column and board based on where they've been added ✅
+  - How I did it: Now, the boardId is taken out of the query parameter and used to figure out which board to update. It will always update that board's "To Do" column with a new task and then users will be able to move them from there.
+- What I did: Change the conditional rendering in Column.jsx to reflect the way the data is now saved. It should be much easier to just render the tasks that are found in that column ✅
+  - How I did it: Pass Task Cards as children props to Column.jsx, get the tasks from board in BoardView. I ended up deleting the endpoint and function associated with readTasks because it's no longer needed now that tasks are saved within columns within boards. Now, we just read the board and get the tasks out of the board.
 
 Today's priorities:
+- Change updateTask in server.js to include the board and task id and update from within the board
+- Make it so when you update the status it actually moves the task to its rightful column
+- Change deleteTask so it deletes task from within its board
 - Finish functionality in NewTaskForm.jsx to add a task to current board
   - in server.js, modify createTask() as written in notes on Dec 11
 - Work on how you will move the tasks from column to column when user does & then allow user to drag/drop cards
@@ -242,6 +245,7 @@ Next Steps
 ## Optimizations
 - Add styling and responsive design using **TailwindCSS**.
 - Use framer motion to make smooth animations in the design
+- Figure out how to hide all of the super long URLs of query parameters from the user
 - Add a submit/cancel button for the title editing.
 - Add color picker for each column background, put picker to right of column title
 - Toggle dark/light/charcuterie/Y2k mode

@@ -40,7 +40,7 @@ export default function Homepage() {
         
         // fetch from api/boards/create
         try {
-            const response = await fetch('http://localhost:8000/api/boards/create', {
+            const response = await fetch('http://localhost:8000/api/board/create', {
                 method: 'POST',
                 headers: {'Content-type': 'application/json'},
                 body: JSON.stringify({ title: boardTitle })
