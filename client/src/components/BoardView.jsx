@@ -1,14 +1,16 @@
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import KanbanBoard from "./KanbanBoard";
 import Column from "./Column";
 import NewTaskForm from "./NewTaskForm";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import TaskCard from "./TaskCard";
 
 export default function BoardView() {
     const { boardId } = useParams();
     const [ board, setBoard ] = useState();
     const [openModal, setOpenModal] = useState(false);
 
+    // fetch board on page mount
     useEffect(() => {
         async function fetchBoard() {
             try {
@@ -34,7 +36,11 @@ export default function BoardView() {
                         <Column 
                             setOpenModal={setOpenModal}
                             key={column._id}
-                            title={column.title}></Column>
+                            title={column.title}>
+                                {column.tasks.map(task => (
+                                    <TaskCard key={task._id} taskName={task.title} taskDesc={task.desc}></TaskCard>
+                                ))}
+                            </Column>
                     ))}
                 </KanbanBoard>
                 {openModal && (

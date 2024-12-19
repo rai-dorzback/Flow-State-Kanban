@@ -1,6 +1,6 @@
-# Kanban Board 
+# Flow State Kanban Board 
 
-Kanban Board allows users to create, manage, and organize tasks into customizable columns. Users can add new tasks, move them betIen columns (e.g., To Do, In Progress, Done) using drag-and-drop, and customize each column’s color. The app uses React for dynamic UI updates and local storage to persist data across sessions. This project demonstrates fundamental React concepts like state management, event handling, and working with local storage for persistence.
+Flow State allows users to create, manage, and organize tasks into customizable columns. Users can add new tasks, move them betIen columns (e.g., To Do, In Progress, Done) using drag-and-drop, and customize each column’s color. The app uses React for dynamic UI updates and local storage to persist data across sessions. This project demonstrates fundamental React concepts like state management, event handling, and working with local storage for persistence.
 
 ## Table of Contents
 - [Technologies Used](#technologies-used)
@@ -41,10 +41,12 @@ Other Tools
 
 ## Development Stage
 **Dec 18, 2024**
+- Figure out how tasks will be saved so that they are in the right column and board based on where they've been added ✅
+  - Now, the boardId is taken out of the query parameter and used to figure out which board to update. It will always update that board's "To Do" column with a new task and then users will be able to move them from there.
+- Change the conditional rendering in Column.jsx to reflect the way the data is now saved. It should be much easier to just render the tasks that are found in that column ✅
+  - Pass Task Cards as children props to Column.jsx, get the tasks from board in BoardView. I ended up deleting the endpoint and function associated with readTasks because it's no longer needed now that tasks are saved within columns within boards. Now, we just read the board and get the tasks out of the board.
+
 Today's priorities:
-- Figure out how tasks will be saved so that they are in the right column and board based on where they've been added
-- Change the conditional rendering in Column.jsx to reflect the way the data is now saved. It should be much easier to just render the tasks that are found in that column
-  - Pass Task Cards as children props to Column.jsx and lift state up to BoardView
 - Finish functionality in NewTaskForm.jsx to add a task to current board
   - in server.js, modify createTask() as written in notes on Dec 11
 - Work on how you will move the tasks from column to column when user does & then allow user to drag/drop cards

@@ -10,7 +10,7 @@ const PORT = process.env.PORT;
 const taskSchema = new Schema({
     title: { type: String, required: true },
     desc: { type: String, default: '' },
-    status: { type: String, required: true, enum: ['To Do', 'In Progress', 'Done'], default: 'To Do' },
+    status: { type: String, required: true, enum: ['To Do', 'In Progress', 'Done'], default: 'To Do' }
 });
 
 const columnSchema = new Schema({
@@ -55,8 +55,6 @@ async function startServer() {
         app.get('/', (req, res) => {
             res.send('Server is running!')
         });
-        // get all tasks
-        app.get('/api/tasks', (req, res) => readTasks(req, res));
         // get all boards
         app.get('/api/boards', (req, res) => readBoards(req, res));
         // get 1 boards data
@@ -65,7 +63,7 @@ async function startServer() {
         // create new board
         app.post('/api/boards/create', (req, res) => createBoard(req, res));
         // create new task
-        app.post('/api/create', (req, res) => createTask(req, res));
+        app.post('/api/:boardId/createTask', (req, res) => createTask(req, res));
 
         // PATCH request to update board title
         app.patch('/api/boards/title/:id', (req, res) => updateBoardTitle(req, res));
@@ -131,17 +129,27 @@ async function updateBoardTitle(req, res) {
 };
 
 async function createTask(req, res) {
-    try {
-        const task = new Task({
-            title: req.body.title,
-            desc: req.body.desc,
-            status: req.body.status
-        });
+    const boardId = req.params.boardId;
+    const newTask = {
+        title: req.body.title,
+        desc: req.body.desc,
+        status: "To Do",
+    };
 
-        // *** SAVE TASK SPECIFICALLY INSIDE ITS RIGHTFUL BOARD - CAN TAKE BOARD ID OUT OF URL TO KNOW WHICH ONE TO SAVE TO
-        // save new task to database
-        const savedTask = await task.save();
-        res.status(201).json(savedTask);
+    try {
+        // Find the correct board and update the To Do column
+        const updatedBoard = await Board.findOneAndUpdate(
+            { _id: boardId, "columns.title": "To Do" }, 
+            // Push new task into column
+            { $push: { "columns.$.tasks": newTask } },
+            { new: true }
+        );
+        
+        if (!updatedBoard) {
+            return res.status(404).json({ message: 'Board or column not found. Task was not created.' });
+        }
+
+        res.status(201).json(updatedBoard); 
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error creating task' });
@@ -165,17 +173,6 @@ async function deleteTask(req, res) {
     }
 };
 
-async function readTasks(req, res) {
-    try {
-        // find all tasks in Task collection
-        const tasks = await Task.find();
-        res.status(200).json(tasks);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Error fetching tasks' });
-    };
-};
-
 async function readBoards(req, res) {
     try {
         const boards = await Board.find();
@@ -190,6 +187,11 @@ async function readBoard(req, res) {
     try {
         const boardId = req.params.id;
         const board = await Board.findById(boardId);
+
+        if (!board) {
+            return res.status(404).json({ message: "Board not found" });
+        }
+
         res.status(200).json(board);
     } catch(err) {
         console.error(err);
