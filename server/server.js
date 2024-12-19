@@ -199,6 +199,7 @@ async function readBoard(req, res) {
     };
 };
 
+
 async function updateTask(req, res, field) {
     const boardId = req.params.boardId;
     const taskId = req.params.taskId;
@@ -212,12 +213,19 @@ async function updateTask(req, res, field) {
         }
 
         let taskUpdated = false;
+        let task = null;
+        let oldColumn = null;
+
         for(const column of board.columns) {
             const colTasks = column.tasks
             // find index of task in the column so we can manipulate it
             const taskIndex = colTasks.findIndex(task => task._id.toString() === taskId);
 
             if(taskIndex !== -1) {
+                task = colTasks[taskIndex];
+                oldColumn = column;
+
+                // update task data
                 colTasks[taskIndex] = { ...colTasks[taskIndex].toObject(), ...updatedData };
 
                 taskUpdated = true;
@@ -229,6 +237,10 @@ async function updateTask(req, res, field) {
             res.status(404).json({ message: 'Task not found, so it was not updated' });
         }
 
+        if(field === "status") {
+            await moveTaskColumn(board, task, oldColumn, updatedData[field]);
+        }
+
         const updatedBoard = await board.save();
 
         res.status(200).json(updatedBoard);
@@ -237,3 +249,23 @@ async function updateTask(req, res, field) {
         res.status(500).json({ message: 'Error updating task' });
     }
 };
+
+async function moveTaskColumn(board, task, oldColumn, updatedStatus) {
+    // remove task from old column by filtering out task by id
+    oldColumn.tasks = oldColumn.tasks.filter(t => t._id.toString() !== task._id.toString());
+
+    // find new column based on updated status
+    let newColumn = board.columns.find(col => col.title === updatedStatus);
+
+    if(!newColumn) {
+        throw new Error('Couldn\'t find the column with that status')
+    }
+
+    // add task to new column
+    newColumn.tasks.push(task);
+
+    // update task's status
+    task.status = updatedStatus;
+}
+
+startServer();

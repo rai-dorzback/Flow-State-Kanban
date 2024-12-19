@@ -45,10 +45,12 @@ Other Tools
   - How I did it: Now, the boardId is taken out of the query parameter and used to figure out which board to update. It will always update that board's "To Do" column with a new task and then users will be able to move them from there.
 - What I did: Change the conditional rendering in Column.jsx to reflect the way the data is now saved. It should be much easier to just render the tasks that are found in that column ✅
   - How I did it: Pass Task Cards as children props to Column.jsx, get the tasks from board in BoardView. I ended up deleting the endpoint and function associated with readTasks because it's no longer needed now that tasks are saved within columns within boards. Now, we just read the board and get the tasks out of the board.
+- Change updateTask in server.js to include the board and task id and update from within the board ✅
+  - Take boardId from query params, find board by id, loop through columns, find index of current task in the column, update task.
+- Write a function to move the task to its rightful column if the status is changed ✅
+  - If the field in updateTask() is "status," filter the task out of the old column, find new column by comparing the status to the title, push task onto new column's tasks array.
 
 Today's priorities:
-- Change updateTask in server.js to include the board and task id and update from within the board
-- Make it so when you update the status it actually moves the task to its rightful column
 - Change deleteTask so it deletes task from within its board
 - Finish functionality in NewTaskForm.jsx to add a task to current board
   - in server.js, modify createTask() as written in notes on Dec 11
