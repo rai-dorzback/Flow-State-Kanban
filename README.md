@@ -44,14 +44,15 @@ Other Tools
 
 - Changed deleteTask to match the new data structure. Now, the endpoint will include the board, column, and task id so the task can be found in the right place and deleted from there using the .splice() array method.
 - NewTaskForm now works to add a new task! Now, BoardView passes boardId into NewTaskForm. I also had to remove e.preventDefault() because it was causing the form to not work.
+- Achieved drag and drop functionality for tasks to move between columns using React DnD. First, I had to install react-dnd and react-dnd-html5-backend. I had to read through the documentation, which helped get the drag functionality. Getting the drop functionality was a different beast entirely.
 
 Priorities:
-- Work on how you will move the tasks from column to column when user does & then allow user to drag/drop cards
 - Add edit/delete buttons to tasks
 
-Considerations/optimizations:
+Near-future considerations:
 - The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.
-- In the future, I may make it so that the user can add the task to any column, not just "To Do" and so that they can customize the columns.
+- When user has "picked up" a card to drop in a column, either change color of the column or have sort of bordered spaces they can snap to outlined.
+- Make it so that the user can add the task to any column, not just "To Do" and so that they can customize the columns.
 
 **Dec 18, 2024**
 
@@ -291,10 +292,11 @@ Next Steps
 - Any comments in the code prefixed with three stars (**`***`**) indicate areas that need further implementation or revisiting.
 
 ## Resources
-- [TailwindCSS Docs](https://tailwindcss.com/docs/)
-- [React Icons](https://react-icons.github.io/react-icons/)
 - [React Docs](https://react.dev/)
 - [Mongoose Docs](https://mongoosejs.com/docs/guide.html)
+- [React DnD Docs](https://react-dnd.github.io/react-dnd/docs/overview)
+- [TailwindCSS Docs](https://tailwindcss.com/docs/)
+- [React Icons](https://react-icons.github.io/react-icons/)
 
 ## Contact
 <p> 

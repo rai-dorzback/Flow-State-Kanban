@@ -6,9 +6,9 @@ import NewTaskForm from "./NewTaskForm";
 import TaskCard from "./TaskCard";
 
 export default function BoardView() {
-    const { boardId } = useParams();
     const [ board, setBoard ] = useState();
     const [openModal, setOpenModal] = useState(false);
+    const { boardId } = useParams();
 
     // fetch board on page mount
     useEffect(() => {
@@ -22,11 +22,42 @@ export default function BoardView() {
             }
         };
         fetchBoard();
-    }, [boardId]);
+    }, [board]);
 
     if(!board) {
         return <div>Loading...</div>
     }
+
+    async function updateTaskStatus(taskId, newStatus, columnId) {
+        try {
+          // make fetch request
+          const response = await fetch(`http://localhost:8000/api/${boardId}/${taskId}/status`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              status: newStatus
+            })
+          });
+      
+          if(!response.ok) {
+            throw new Error('Failed to update task status');
+          };
+      
+          const updatedBoard = {...board};
+          const column = updatedBoard.columns.find(col => col._id === columnId);
+          if(column) {
+            const task = column.tasks.find(task => task._id === taskId);
+            if (task) {
+              task.status = newStatus;
+            }
+          };
+
+          setBoard(updatedBoard);
+          console.log(`Task successfully moved.`)
+        } catch(err) {
+          console.error("Error updating task:", err);
+        }
+      };
 
     return (
         <>
@@ -36,9 +67,18 @@ export default function BoardView() {
                         <Column 
                             setOpenModal={setOpenModal}
                             key={column._id}
-                            title={column.title}>
+                            title={column.title}
+                            tasks={column.tasks}
+                            updateTaskStatus={updateTaskStatus}
+                            >
                                 {column.tasks.map(task => (
-                                    <TaskCard key={task._id} taskName={task.title} taskDesc={task.desc}></TaskCard>
+                                    <TaskCard 
+                                    key={task._id} 
+                                    taskId={task._id}
+                                    boardId={board._id} 
+                                    columnId={column._id}
+                                    taskName={task.title} 
+                                    taskDesc={task.desc}></TaskCard>
                                 ))}
                             </Column>
                     ))}

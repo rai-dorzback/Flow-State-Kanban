@@ -1,3 +1,5 @@
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 
@@ -56,6 +58,7 @@ const KanbanBoard = ({ children, board, setBoard }) => {
     }
 
     return (
+        <DndProvider backend={HTML5Backend}>
         <div className="text-white flex flex-col items-center">
             <div className="flex items-center justify-center">
                 {/* if user is editing title, show form else show read-only version */}
@@ -74,6 +77,7 @@ const KanbanBoard = ({ children, board, setBoard }) => {
                 { children }
             </div>
         </div>
+        </DndProvider>
     )
 };
 
