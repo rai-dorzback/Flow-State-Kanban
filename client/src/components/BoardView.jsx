@@ -44,7 +44,7 @@ export default function BoardView() {
                     ))}
                 </KanbanBoard>
                 {openModal && (
-                <NewTaskForm setOpenModal={setOpenModal}></NewTaskForm>
+                <NewTaskForm setOpenModal={setOpenModal} boardId={boardId}></NewTaskForm>
                 )}
             </div>
         </>

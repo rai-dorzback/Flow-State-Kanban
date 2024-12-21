@@ -43,14 +43,15 @@ Other Tools
 **Dec 21, 2024**
 
 - Changed deleteTask to match the new data structure. Now, the endpoint will include the board, column, and task id so the task can be found in the right place and deleted from there using the .splice() array method.
+- NewTaskForm now works to add a new task! Now, BoardView passes boardId into NewTaskForm. I also had to remove e.preventDefault() because it was causing the form to not work.
 
-Picking up where I left off on Dec 18:
-- Finish functionality in NewTaskForm.jsx to add a task to current board
-  - in server.js, modify createTask() as written in notes on Dec 11
+Priorities:
 - Work on how you will move the tasks from column to column when user does & then allow user to drag/drop cards
+- Add edit/delete buttons to tasks
 
-Considerations:
+Considerations/optimizations:
 - The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.
+- In the future, I may make it so that the user can add the task to any column, not just "To Do" and so that they can customize the columns.
 
 **Dec 18, 2024**
 

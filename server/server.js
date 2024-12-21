@@ -147,7 +147,7 @@ async function createTask(req, res) {
         
         if (!updatedBoard) {
             return res.status(404).json({ message: 'Board or column not found. Task was not created.' });
-        }
+        };
 
         res.status(201).json(updatedBoard); 
     } catch (err) {

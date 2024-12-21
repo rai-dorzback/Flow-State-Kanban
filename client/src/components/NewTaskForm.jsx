@@ -1,20 +1,20 @@
 import { useState } from "react";
 import Button from "./Button.jsx";
 
-const NewTaskForm = ({ setOpenModal }) => {
+const NewTaskForm = ({ setOpenModal, boardId }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
-    e.preventDefault();
+    // e.preventDefault();
     setLoading(true);
     addTaskToDB();
   };
 
   async function addTaskToDB() {
     try {
-      const response = await fetch('http://localhost:8000/api/create', {
+      const response = await fetch(`http://localhost:8000/api/${boardId}/createTask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -26,6 +26,7 @@ const NewTaskForm = ({ setOpenModal }) => {
         throw new Error('Failed to add new task')
       } else {
         console.log(response)
+        setLoading(false);
       }
     } catch(err) {
       console.error(`Error creating new task: ${err}`);
