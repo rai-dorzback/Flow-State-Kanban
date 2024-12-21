@@ -72,7 +72,7 @@ async function startServer() {
         app.patch('/api/:boardId/:taskId/title', (req, res) => updateTask(req, res, 'title'));
         app.patch('/api/:boardId/:taskId/desc', (req, res) => updateTask(req, res, 'desc'));
 
-        app.delete('/api/:boardId/:taskId', (req, res) => deleteTask(req, res));
+        app.delete('/api/:boardId/:columnId/:taskId', (req, res) => deleteTask(req, res));
 
         // listen on port
         app.listen(PORT, () => { console.log(`Server is running on ${PORT}`) });
@@ -157,20 +157,33 @@ async function createTask(req, res) {
 };
 
 async function deleteTask(req, res) {
-    try {
-        const taskId = req.params.id;
-        const deletedTask = await Task.findByIdAndDelete(taskId);
-        console.log(deletedTask);
+    const { boardId, columnId, taskId } = req.params;
 
-        if (!deletedTask) {
-            return res.status(404).json({ message: 'Task not found' });
+    try {
+        const board = await Board.findById(boardId);
+        if (!board) {
+            return res.status(404).json({ message: 'Board not found' });
         }
 
-        res.status(204).json({ message: 'Task deleted successflly' })
+        const column = board.columns.find(col => col._id.toString() === columnId);
+        if (!column) {
+            return res.status(404).json({ message: 'Column not found' });
+        }
+
+        const taskIndex = await column.tasks.findIndex(task => task._id.toString() === taskId);
+        if(taskIndex === -1) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        
+        column.tasks.splice(taskIndex, 1);
+
+        await board.save();
+
+        res.status(200).json(board);
     } catch(err) {
         console.error(err);
-        res.status(500).json({ message: 'Error deleting task' })
-    }
+        res.status(500).json({ message: 'Error deleting task' });
+    };
 };
 
 async function readBoards(req, res) {
@@ -250,7 +263,8 @@ async function updateTask(req, res, field) {
     }
 };
 
-async function moveTaskColumn(board, task, oldColumn, updatedStatus) {
+// *** does this need to be async?
+function moveTaskColumn(board, task, oldColumn, updatedStatus) {
     // remove task from old column by filtering out task by id
     oldColumn.tasks = oldColumn.tasks.filter(t => t._id.toString() !== task._id.toString());
 

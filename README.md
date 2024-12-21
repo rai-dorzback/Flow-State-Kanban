@@ -40,6 +40,18 @@ Other Tools
 - Figure out why the useEffect in Column.jsx is sending the tasks a lot of times
 
 ## Development Stage
+**Dec 21, 2024**
+
+- Changed deleteTask to match the new data structure. Now, the endpoint will include the board, column, and task id so the task can be found in the right place and deleted from there using the .splice() array method.
+
+Picking up where I left off on Dec 18:
+- Finish functionality in NewTaskForm.jsx to add a task to current board
+  - in server.js, modify createTask() as written in notes on Dec 11
+- Work on how you will move the tasks from column to column when user does & then allow user to drag/drop cards
+
+Considerations:
+- The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.
+
 **Dec 18, 2024**
 
 - **What I did**: Implemented task saving logic to ensure tasks are placed in the correct board and column based on where they are added ✅  
@@ -61,6 +73,7 @@ Next Steps/Priorities:
 - Work on how you will move the tasks from column to column when user does & then allow user to drag/drop cards
 
 **Dec 11, 2024**
+
 Today, I achieved dynamically rendering tasks in their appropriate columns (To Do, In Progress, Done)!  ✅
 Once I change how tasks are saved in the database, I will conditionally render them based on what column they're in in the databse instead of based on the task status and column title (tasks are currently all in a general pool of tasks in the database, not specifically saved in any one).
 I started working on making a POST request from NewTaskForm to create a new task, but ran into some issues that I will have to tackle next time.
@@ -86,6 +99,7 @@ Next Steps
 - Assure BoardView dynamically displays columns and tasks from database into correct columns
 
 **Dec 10, 2024**
+
 Priorities today: 
 - Display existing board titles on Homepage ✅
 - Add link to board on Homepage - did this using Link from react-router-dom ✅
@@ -110,6 +124,7 @@ Errors encountered:
 - SOLUTION: I forgot to use response.json() on the response, which caused the error. Now, the object is returning, BUT it runs infinitely- i think because I set the dependency array to boardTitles. I changed the dependency array to be empty, and it solved the infinite loop.
 
 **Dec 8, 2024**
+
 -Today, I integrated the backend with the React frontend, enabling the frontend to connect to the API in `server.js`. I used `create vite@latest` to quickly set up the boilerplate.
 - I decided to transition from using vanilla MongoDB to **Mongoose**, as it provides a much cleaner and more efficient way to define schemas and models, especially when it comes to updating tasks, boards, and columns.
 - I added functionality to create a new board with three default columns: **To Do**, **In Progress**, and **Done**. Additionally, I implemented a route at `/boards/title/:id` to allow users to update the board title.
@@ -126,7 +141,8 @@ Next steps:
 - Consider changing endpoints to have query parameters (i.e., ?q=) instead of just longer and longer paths (how it is now). Model it off of apis like cocktailDB
 - Integrate client and server readmes
 
-**Dec 7, 2024** Progress
+**Dec 7, 2024** 
+
 - Solved a problem with the `PATCH` request: The issue was not with matching the task ID in MongoDB Atlas but with handling `req.body` for the `status`. For now, I’ve hard-coded the status to `"In Progress"`. Once the frontend is implemented, I’ll update this to dynamically fetch the status from a form via `req.body`.
 - Added functionality to update the following task properties:
   - **Status**
@@ -154,6 +170,7 @@ In working on the delete functionality, I ran into an issue with parsing the id 
 - Plan the database schema optimization for scalability as the project grows.
 
 **Dec 6, 2024**
+
 I have started to learn Node,js, Express, and MongoDB so I will be switching to working on the backend. Instead of local storage, I am building an API that interfaces with the database. I chose to begin the backend development from scratch as I am currently learning backend technologies and wanted a clean start before integrating them with the frontend. 
  Reflection on CRUD Functionality:
 - **Create (POST):** Add tasks to the board.
@@ -167,6 +184,7 @@ Next Steps
 - Resolve `PATCH` request to update the task status (e.g., from "To Do" to "In Progress") by matching the task ID and updating the status.
 
 **Nov 26, 2024:**
+
 **Refactoring KanbanBoard component**
 - To streamline the `KanbanBoard` component and improve readability:
   - Created a new `EditableTitle` component to handle the board title logic and UI.
@@ -190,10 +208,12 @@ Next Steps
 - Finish implementing task state management
 
 **Nov 24, 2024:**
+
 - First, I decided to move AddNewTask from its own jsx file into Column.jsx since it was a small function that is only used in the Column component.
 - I reread some of the React docs while I thought about how I want to pass in the various tasks/task cards into each column. I have decided to set a prop "children" for Column and then pass in the tasks object/task cards as the children. The tasks will conditionally render based on which column its supposed to be in. Using a children prop makes it so I don't need to know what will be inside each Column.
 
 **Nov 23, 2024:**
+
 **Event Handling & Modal State**
 - Int back to the React docs to refamiliarize myself with event handling.
 - I was still deciding where the best place is to store the `openModal` state for adding a new task.
@@ -270,7 +290,7 @@ Next Steps
 - Any comments in the code prefixed with three stars (**`***`**) indicate areas that need further implementation or revisiting.
 
 ## Resources
-- [Tailwind Docs](https://tailwindcss.com/docs/)
+- [TailwindCSS Docs](https://tailwindcss.com/docs/)
 - [React Icons](https://react-icons.github.io/react-icons/)
 - [React Docs](https://react.dev/)
 - [Mongoose Docs](https://mongoosejs.com/docs/guide.html)
