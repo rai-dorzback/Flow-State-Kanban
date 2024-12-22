@@ -13,15 +13,16 @@ Flow State allows users to create, manage, and organize tasks into customizable 
 
 ## Technologies Used
 Frontend
-- React
+- React.js
 - Vite
 - TailwindCSS
+- Motion
 - Javascript
 - HTML
 
 Backend
 - Node.js
-- Express
+- Express.js
 - MongoDB
 
 Other Tools
@@ -37,9 +38,29 @@ Other Tools
 - Persistence: Tasks and column data are saved in MongoDB, so users' progress is preserved.
 - Secret Mode: Some secret color themes (To be revealed later)
 - Mobile-first Design: The app is built to be responsive and works on both desktop and mobile devices.
-- Figure out why the useEffect in Column.jsx is sending the tasks a lot of times
 
 ## Development Stage
+**Dec 22, 2024**
+- Combined React DnD with Motion library so drag and drop animation is super smooth
+
+- I started thinking more about the design for this and am thinking I want to go with a 70s aesthetic. 
+  - Some color palettes I am choosing between: 
+    - [Copacabana](https://www.colorhub.app/browse/copacabana)
+    - [Boardwalk](https://www.colorhub.app/browse/boardwalk)
+    - [Sahara Sunset](https://www.colorhub.app/browse/sahara-sunset)
+    - [Hipster Vibes](https://www.colorhub.app/browse/hipster-vibes).
+  - Aesthetic inspiration pics: 
+    - [Olipop](https://cdn.dribbble.com/users/497743/screenshots/10955270/media/18bb0ca75309dc8c9470b4fb795677c8.jpg?resize=1600x1200&vertical=center)
+    - [Hyunda Chroma](https://cdn.dribbble.com/userupload/13709649/file/original-3351348ef348ff5444cca426f4dd96f5.png?resize=1504x1128&vertical=center)
+
+Priorities:
+- Add edit/delete buttons to tasks
+  - Add exit animation from motion
+- Add delete buttons to boards (and exit animation)
+- The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.
+- When user has "picked up" a card to drop in a column, either change color of the column or have sort of bordered spaces they can snap to outlined.
+- Make it so that the user can add the task to any column, not just "To Do" and so that they can customize the columns.
+
 **Dec 21, 2024**
 
 - Changed deleteTask to match the new data structure. Now, the endpoint will include the board, column, and task id so the task can be found in the right place and deleted from there using the .splice() array method.
@@ -48,11 +69,13 @@ Other Tools
 
 Priorities:
 - Add edit/delete buttons to tasks
+- Add delete buttons to boards
 
 Near-future considerations:
 - The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.
 - When user has "picked up" a card to drop in a column, either change color of the column or have sort of bordered spaces they can snap to outlined.
 - Make it so that the user can add the task to any column, not just "To Do" and so that they can customize the columns.
+- Combine React DnD with framer motion so drag and drop animation is super smooth
 
 **Dec 18, 2024**
 

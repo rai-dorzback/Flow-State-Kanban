@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { motion } from 'motion/react';
 import KanbanBoard from "./KanbanBoard";
 import Column from "./Column";
 import NewTaskForm from "./NewTaskForm";
@@ -71,6 +72,10 @@ export default function BoardView() {
                             tasks={column.tasks}
                             updateTaskStatus={updateTaskStatus}
                             >
+                              <motion.div
+                                    layout // Enables smooth layout animations
+                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                  >
                                 {column.tasks.map(task => (
                                     <TaskCard 
                                     key={task._id} 
@@ -80,6 +85,7 @@ export default function BoardView() {
                                     taskName={task.title} 
                                     taskDesc={task.desc}></TaskCard>
                                 ))}
+                                </motion.div>
                             </Column>
                     ))}
                 </KanbanBoard>
