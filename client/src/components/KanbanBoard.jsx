@@ -71,7 +71,7 @@ const KanbanBoard = ({ children, board, setBoard }) => {
                 ) : (
                     <h1 className="border-b border-white text-lg my-3">{ boardTitle }</h1>  
                 )}
-                <MdModeEdit className="ml-1 cursor-pointer" onClick={handlePencilClick}/>
+                <MdModeEdit className="ml-1 cursor-pointer text-xl" onClick={handlePencilClick}/>
             </div>
             <div className="w-2/3">
                 { children }

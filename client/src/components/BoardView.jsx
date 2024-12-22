@@ -73,8 +73,9 @@ export default function BoardView() {
                             updateTaskStatus={updateTaskStatus}
                             >
                               <motion.div
-                                    layout // Enables smooth layout animations
+                                    layout
                                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                    exit={{ opacity: 0 }}
                                   >
                                 {column.tasks.map(task => (
                                     <TaskCard 

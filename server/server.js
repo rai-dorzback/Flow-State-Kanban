@@ -170,7 +170,7 @@ async function deleteTask(req, res) {
             return res.status(404).json({ message: 'Column not found' });
         }
 
-        const taskIndex = await column.tasks.findIndex(task => task._id.toString() === taskId);
+        const taskIndex = column.tasks.findIndex(task => task._id.toString() === taskId);
         if(taskIndex === -1) {
             return res.status(404).json({ message: 'Task not found' });
         }

@@ -41,7 +41,9 @@ Other Tools
 
 ## Development Stage
 **Dec 22, 2024**
-- Combined React DnD with Motion library so drag and drop animation is super smooth
+- Combined React DnD with Motion library so drag and drop animation is super smooth.
+- When user picks up a card, the columns that are being hovered over cahnge color.
+- Added delete functionality to tasks
 
 - I started thinking more about the design for this and am thinking I want to go with a 70s aesthetic. 
   - Some color palettes I am choosing between: 
@@ -54,11 +56,14 @@ Other Tools
     - [Hyunda Chroma](https://cdn.dribbble.com/userupload/13709649/file/original-3351348ef348ff5444cca426f4dd96f5.png?resize=1504x1128&vertical=center)
 
 Priorities:
-- Add edit/delete buttons to tasks
-  - Add exit animation from motion
+- Add edit functionality to tasks
+  - Create modal for editing task
+  - Change updateTaskStatus in BoardView to be able to handle any update? Pass that function into the modal so we can update the title/desc in the DB and state
 - Add delete buttons to boards (and exit animation)
+- Add tooltips to delete and edit buttons
+- Let users add a card to any column
 - The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.
-- When user has "picked up" a card to drop in a column, either change color of the column or have sort of bordered spaces they can snap to outlined.
+- When user has "picked up" a card to drop in a column, have sort of bordered spaces they can snap to outlined.
 - Make it so that the user can add the task to any column, not just "To Do" and so that they can customize the columns.
 
 **Dec 21, 2024**
@@ -296,6 +301,8 @@ Next Steps
 ## Optimizations
 - Add styling and responsive design using **TailwindCSS**.
 - Use framer motion to make smooth animations in the design
+- Add smooth exit animations for task cards
+- Add ability to duplicate cards
 - Figure out how to hide all of the super long URLs of query parameters from the user
 - Add a submit/cancel button for the title editing.
 - Add color picker for each column background, put picker to right of column title
