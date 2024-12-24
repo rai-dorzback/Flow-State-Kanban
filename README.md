@@ -2,6 +2,14 @@
 
 Flow State allows users to create, manage, and organize tasks into customizable columns. Users can add new tasks, move them betIen columns (e.g., To Do, In Progress, Done) using drag-and-drop, and customize each column’s color. The app uses React for dynamic UI updates and local storage to persist data across sessions. This project demonstrates fundamental React concepts like state management, event handling, and working with local storage for persistence.
 
+## Design
+<p align="center">
+  <img src="/Flow State Desktop.png" alt="Flow State Logo at top of page. Horizontal nav with two options: Boards and Create New Board. Three columns each with task cards inside. Column names: To Do, In Progress, Done." width=500>
+</p>
+<p align="center">
+  <img src="/Flow State Mobile.png" alt="Flow State Logo at top of page. Horizontal nav with two options: Boards and Create New Board. Three columns each with task cards inside. Column names: To Do, In Progress, Done.">
+</p>
+
 ## Table of Contents
 - [Technologies Used](#technologies-used)
 - [Features](#features)
@@ -40,7 +48,28 @@ Other Tools
 - Mobile-first Design: The app is built to be responsive and works on both desktop and mobile devices.
 
 ## Development Stage
+**Dec 23, 2024**
+- Today, I focused on designing the boardview page on desktop and mobile using Figma. Pictures can be seen in [Design](#design)
+- In the end, I chose the [Hipster Vibes](https://www.colorhub.app/browse/hipster-vibes) color palette.
+- The trash can and pencil/edit buttons will be white and only appear when the task is hovered over.
+
+Priorites Next Time:
+- Design Homepage Desktop & Mobile
+  - Include information about what the app is and how to use it
+- Design Add New Task Modal/Edit Task Modal on Desktop & Mobile. Maybe there's a way it can be the same modal. For Edit Task Modal, the current task info will be already entered into the form fields. Button will say "Save" instead of "Add."
+- Add edit functionality to tasks
+  - Create modal for editing task
+  - Change updateTaskStatus() in BoardView to be able to handle any update? Pass that function into the modal so we can update the title/desc in the DB and state
+- Add delete buttons to boards (and exit animation)
+- Add tooltips to delete and edit buttons
+- Add exit animation for when task cards are deleted
+- The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.
+- When user has "picked up" a card to drop in a column, have sort of bordered spaces they can snap to outlined.
+- Let users add a card to any column instead of only the To Do column
+- Let users create custom columns.
+
 **Dec 22, 2024**
+
 - Combined React DnD with Motion library so drag and drop animation is super smooth.
 - When user picks up a card, the columns that are being hovered over cahnge color.
 - Added delete functionality to tasks
@@ -61,6 +90,7 @@ Priorities:
   - Change updateTaskStatus in BoardView to be able to handle any update? Pass that function into the modal so we can update the title/desc in the DB and state
 - Add delete buttons to boards (and exit animation)
 - Add tooltips to delete and edit buttons
+- Add exit animation for when task cards are deleted
 - Let users add a card to any column
 - The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.
 - When user has "picked up" a card to drop in a column, have sort of bordered spaces they can snap to outlined.
