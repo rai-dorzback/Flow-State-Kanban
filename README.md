@@ -46,6 +46,10 @@ Other Tools
 - **Testing:** Postman
 - **Version Control:** Git
 
+Resources
+- Color Palette: [ColorHub](https://www.colorhub.app/)
+- [Logo](https://logo.com/dashboard)
+
 ## Development Stage
 **Dec 23, 2024**
 - Today, I focused on designing the boardview page on desktop and mobile using Figma. Pictures can be seen in [Design](#design)
