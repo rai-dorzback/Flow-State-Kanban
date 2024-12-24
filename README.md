@@ -2,22 +2,30 @@
 
 Flow State allows users to create, manage, and organize tasks into customizable columns. Users can add new tasks, move them betIen columns (e.g., To Do, In Progress, Done) using drag-and-drop, and customize each column’s color. The app uses React for dynamic UI updates and local storage to persist data across sessions. This project demonstrates fundamental React concepts like state management, event handling, and working with local storage for persistence.
 
-## Design
-<p align="center">
-  <img src="/Flow State Desktop.png" alt="Flow State Logo at top of page. Horizontal nav with two options: Boards and Create New Board. Three columns each with task cards inside. Column names: To Do, In Progress, Done." width=500>
-</p>
-<p align="center">
-  <img src="/Flow State Mobile.png" alt="Flow State Logo at top of page. Horizontal nav with two options: Boards and Create New Board. Three columns each with task cards inside. Column names: To Do, In Progress, Done.">
-</p>
-
 ## Table of Contents
-- [Technologies Used](#technologies-used)
+- [Design](#design)
 - [Features](#features)
+- [Technologies Used](#technologies-used)
 - [Development Stage](#development-stage)
 - [Optimizations](#optimizations)
 - [Lessons Learned](#lessons-learned)
 - [Resources](#resources)
 - [Contact](#contact)
+
+## Design
+<p align="center">
+  <img src="/Flow State Desktop.png" alt="Flow State Logo at top of page. Horizontal nav with two options: Boards and Create New Board. Three columns each with task cards inside. Column names: To Do, In Progress, Done." height=400>
+  <img src="/Flow State Mobile.png" alt="Flow State Logo at top of page. Horizontal nav with two options: Boards and Create New Board. Three columns each with task cards inside. Column names: To Do, In Progress, Done." height=500>
+</p>
+
+## Features
+- Create, Read, Update, and Delete Tasks
+- Create multiple Kanban boards
+- Drag-and-Drop: Move tasks betIen columns (e.g., To Do, In Progress, Done) using drag-and-drop functionality.
+- Customizable Columns: Change the background color of each column to personalize the board.
+- Persistence: Tasks and column data are saved in MongoDB, so users' progress is preserved.
+- Secret Mode: Some secret color themes (To be revealed later)
+- Mobile-first Design: The app is built to be responsive and works on both desktop and mobile devices.
 
 ## Technologies Used
 Frontend
@@ -37,15 +45,6 @@ Other Tools
 - **Design:** Figma
 - **Testing:** Postman
 - **Version Control:** Git
-
-## Features
-- Create, Read, Update, and Delete Tasks
-- Create multiple Kanban boards
-- Drag-and-Drop: Move tasks betIen columns (e.g., To Do, In Progress, Done) using drag-and-drop functionality.
-- Customizable Columns: Change the background color of each column to personalize the board.
-- Persistence: Tasks and column data are saved in MongoDB, so users' progress is preserved.
-- Secret Mode: Some secret color themes (To be revealed later)
-- Mobile-first Design: The app is built to be responsive and works on both desktop and mobile devices.
 
 ## Development Stage
 **Dec 23, 2024**
