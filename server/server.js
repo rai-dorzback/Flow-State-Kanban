@@ -24,8 +24,8 @@ const boardSchema = new Schema({
 });
 
 // Create models
-const Task = mongoose.model('Task', taskSchema);
-const Column = mongoose.model('Column', columnSchema);
+// const Task = mongoose.model('Task', taskSchema);
+// const Column = mongoose.model('Column', columnSchema);
 const Board = mongoose.model('Board', boardSchema);
 
 const password = encodeURIComponent(process.env.DB_PASSWORD);
@@ -264,7 +264,6 @@ async function updateTask(req, res, field) {
     }
 };
 
-// *** does this need to be async?
 function moveTaskColumn(board, task, oldColumn, updatedStatus) {
     // remove task from old column by filtering out task by id
     oldColumn.tasks = oldColumn.tasks.filter(t => t._id.toString() !== task._id.toString());

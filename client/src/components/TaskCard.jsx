@@ -1,12 +1,12 @@
 import { useDrag } from 'react-dnd';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ItemTypes } from '../Constants.js';
 import { MdModeEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import EditTaskForm from "./EditTaskForm";
 
-const TaskCard = ({ taskId, boardId, columnId, taskName, taskDesc, setOpenEditModal, openEditModal }) => {
+const TaskCard = ({ taskId, boardId, columnId, taskName, taskDesc }) => {
     const [{isDragging}, drag, dragPreview] = useDrag(() => ({
         type: ItemTypes.CARD,
         item: { taskId, boardId, columnId },
@@ -16,17 +16,17 @@ const TaskCard = ({ taskId, boardId, columnId, taskName, taskDesc, setOpenEditMo
       }));
 
     async function handleTaskDelete() {
-        const response = await fetch(`http://localhost:8000/api/${boardId}/${columnId}/${taskId}`, {
-            method: 'DELETE'
-        });
-
-        if(!response.ok) {
-            throw new Error('Failed to delete task');
+        try {
+            const response = await fetch(`http://localhost:8000/api/${boardId}/${columnId}/${taskId}`, {
+                method: 'DELETE'
+            });
+    
+            if(!response.ok) {
+                throw new Error('Failed to delete task');
+            };
+        } catch(err) {
+            console.error(err);
         };
-    };
-
-    function handleOpenEditModal() {
-        setOpenEditModal(true);
     };
 
     return (
@@ -50,22 +50,18 @@ const TaskCard = ({ taskId, boardId, columnId, taskName, taskDesc, setOpenEditMo
                 <div>
                     <div className='flex'>
                         <p className='font-bold'>{ taskName }</p>
-                            <MdModeEdit className="cursor-pointer text-xl" onClick={handleOpenEditModal}></MdModeEdit>
+                            <Link to={`/edit/${boardId}/${taskId}/${taskName}/${taskDesc}`}>
+                                <MdModeEdit 
+                                    className="cursor-pointer text-xl" 
+                                    >
+                                </MdModeEdit>
+                            </Link>
                             <FaTrashAlt className="cursor-pointer " onClick={handleTaskDelete}></FaTrashAlt>  
                     </div>
                     <p>{ taskDesc }</p>
                 </div>
             </div>
         </motion.div>
-        {openEditModal && (
-            <EditTaskForm 
-              setOpenEditModal={setOpenEditModal} 
-              boardId={boardId} 
-              taskId={taskId} 
-              taskName={taskName} 
-              taskDesc={taskDesc}>
-            </EditTaskForm>
-        )}
         </>
     )
 };

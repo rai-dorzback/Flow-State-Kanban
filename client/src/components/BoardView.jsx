@@ -9,7 +9,6 @@ import TaskCard from "./TaskCard";
 export default function BoardView() {
     const [ board, setBoard ] = useState();
     const [openNewTaskModal, setOpenNewTaskModal] = useState(false);
-    const [openEditModal, setOpenEditModal] = useState(false);
     const { boardId } = useParams();
 
     // fetch board on page mount
@@ -85,9 +84,7 @@ export default function BoardView() {
                                   boardId={board._id} 
                                   columnId={column._id}
                                   taskName={task.title} 
-                                  taskDesc={task.desc}
-                                  setOpenEditModal={setOpenEditModal}
-                                  openEditModal={openEditModal}>
+                                  taskDesc={task.desc}>
                                   </TaskCard>
                                 ))}
                                 </motion.div>
