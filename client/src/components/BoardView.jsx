@@ -8,7 +8,8 @@ import TaskCard from "./TaskCard";
 
 export default function BoardView() {
     const [ board, setBoard ] = useState();
-    const [openModal, setOpenModal] = useState(false);
+    const [openNewTaskModal, setOpenNewTaskModal] = useState(false);
+    const [openEditModal, setOpenEditModal] = useState(false);
     const { boardId } = useParams();
 
     // fetch board on page mount
@@ -66,7 +67,7 @@ export default function BoardView() {
                 <KanbanBoard board={board} setBoard={setBoard}>
                     {board.columns.map(column => (
                         <Column 
-                            setOpenModal={setOpenModal}
+                            setOpenNewTaskModal={setOpenNewTaskModal}
                             key={column._id}
                             title={column.title}
                             tasks={column.tasks}
@@ -78,20 +79,23 @@ export default function BoardView() {
                                     exit={{ opacity: 0 }}
                                   >
                                 {column.tasks.map(task => (
-                                    <TaskCard 
-                                    key={task._id} 
-                                    taskId={task._id}
-                                    boardId={board._id} 
-                                    columnId={column._id}
-                                    taskName={task.title} 
-                                    taskDesc={task.desc}></TaskCard>
+                                  <TaskCard 
+                                  key={task._id} 
+                                  taskId={task._id}
+                                  boardId={board._id} 
+                                  columnId={column._id}
+                                  taskName={task.title} 
+                                  taskDesc={task.desc}
+                                  setOpenEditModal={setOpenEditModal}
+                                  openEditModal={openEditModal}>
+                                  </TaskCard>
                                 ))}
                                 </motion.div>
                             </Column>
                     ))}
                 </KanbanBoard>
-                {openModal && (
-                <NewTaskForm setOpenModal={setOpenModal} boardId={boardId}></NewTaskForm>
+                {openNewTaskModal && (
+                <NewTaskForm setOpenNewTaskModal={setOpenNewTaskModal} boardId={boardId}></NewTaskForm>
                 )}
             </div>
         </>

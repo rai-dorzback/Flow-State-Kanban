@@ -51,6 +51,31 @@ Resources
 - [Logo](https://logo.com/dashboard)
 
 ## Development Stage
+**Jan 26, 2024**
+Working on:
+- Edit functionality for task cards. Make modal work for both editing and adding.
+  - I may need to find a better place to actually put the EditTaskForm modal. Right now it's in TaskCard because I need a way to get the correct taskId/name/etc. But it doesn't make sense to have it there and confuses things a bit. Find another way to access the right task name and such?
+  - Need to figure out how to solve the below issue with a default value
+
+Issues I ran into:
+- In setting a value for the text inputs so that it has the title/desc of that task and you can edit from there, for some reason it became read-only so the user couldn't actually edit it.
+- When I do have a default value, it only shows the most recently added task card as the default value. Clearly it is not reading the taskName/Desc every time the user clicks an edit button. It should be the task attached to said edit button but it's not.
+
+Priorities:
+- Design Homepage Desktop & Mobile
+  - Include information about what the app is and how to use it
+- Design Add New Task Modal/Edit Task Modal on Desktop & Mobile. Maybe there's a way it can be the same modal. For Edit Task Modal, the current task info will be already entered into the form fields. Button will say "Save" instead of "Add."
+- Add edit functionality to tasks
+  - Create modal for editing task
+  - Change updateTaskStatus() in BoardView to be able to handle any update? Pass that function into the modal so we can update the title/desc in the DB and state
+- Add delete buttons to boards (and exit animation)
+- Add tooltips to delete and edit buttons
+- Add exit animation for when task cards are deleted
+- The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.
+- When user has "picked up" a card to drop in a column, have sort of bordered spaces they can snap to outlined.
+- Let users add a card to any column instead of only the To Do column
+- Let users create custom columns.
+
 **Dec 23, 2024**
 - Today, I focused on designing the boardview page on desktop and mobile using Figma. Pictures can be seen in [Design](#design)
 - In the end, I chose the [Hipster Vibes](https://www.colorhub.app/browse/hipster-vibes) color palette.

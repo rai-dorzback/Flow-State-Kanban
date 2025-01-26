@@ -1,13 +1,12 @@
 import { useState } from "react";
 import Button from "./Button.jsx";
 
-const NewTaskForm = ({ setOpenModal, boardId }) => {
+const NewTaskForm = ({ setOpenNewTaskModal, boardId }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
-    // e.preventDefault();
     setLoading(true);
     addTaskToDB();
   };
@@ -34,11 +33,11 @@ const NewTaskForm = ({ setOpenModal, boardId }) => {
   };
 
   function handleCloseModal() {
-    setOpenModal(false);
+    setOpenNewTaskModal(false);
   };
 
   return (
-    <div className="fixed top-0 bg-black bg-opacity-90 w-full h-full flex items-center justify-center">
+    <div className="fixed top-0 bg-black bg-opacity-85 w-full h-full flex items-center justify-center">
       <section className="border border-pink-500 rounded-xl p-2 flex flex-col items-center bg-pink-900/50 w-3/4">
         <h1 className="font-bold my-1">Add New Task</h1>
         <form onSubmit={handleSubmit}>

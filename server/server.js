@@ -65,13 +65,14 @@ async function startServer() {
         // create new task
         app.post('/api/:boardId/createTask', (req, res) => createTask(req, res));
 
-        // PATCH request to update board title
+        // PATCH request to edit/update board title
         app.patch('/api/:boardId/title', (req, res) => updateBoardTitle(req, res));
-        // PATCH requests to update task
+        // PATCH requests to edit/update tasks
         app.patch('/api/:boardId/:taskId/status', (req, res) => updateTask(req, res, 'status'));
         app.patch('/api/:boardId/:taskId/title', (req, res) => updateTask(req, res, 'title'));
         app.patch('/api/:boardId/:taskId/desc', (req, res) => updateTask(req, res, 'desc'));
-
+        
+        // DELETE task
         app.delete('/api/:boardId/:columnId/:taskId', (req, res) => deleteTask(req, res));
 
         // listen on port

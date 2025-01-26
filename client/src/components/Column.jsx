@@ -3,12 +3,10 @@ import { ItemTypes } from '../Constants.js'
 import { useDrop } from 'react-dnd'
 import { motion } from 'motion/react';
 
-function AddNewTask({ setOpenModal }) {  
+function AddNewTask({ setOpenNewTaskModal }) {  
   // function to open modal
   function handleClick() {
-      if(setOpenModal) {
-          setOpenModal(true);
-      }
+      setOpenNewTaskModal(true);
   };
 
   return (
@@ -19,7 +17,7 @@ function AddNewTask({ setOpenModal }) {
   )
 }
 
-export default function Column ({ title, updateTaskStatus, setOpenModal, children }) {
+export default function Column ({ title, updateTaskStatus, setOpenNewTaskModal, children }) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.CARD,
     drop: (item) => updateTaskStatus(item.taskId, title, item.columnId),
@@ -39,7 +37,7 @@ export default function Column ({ title, updateTaskStatus, setOpenModal, childre
         <h1 className='text-center font-bold'>{ title }</h1>
          { children }
         {title === 'To Do' && (
-          <AddNewTask setOpenModal={setOpenModal}/>
+          <AddNewTask setOpenNewTaskModal={setOpenNewTaskModal}/>
         )}
     </div>
     </motion.div>
