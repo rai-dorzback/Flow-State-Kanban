@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 import Button from "./Button.jsx";
 
 const EditTaskForm = () => {
+    const { boardId, columnId, taskId, taskName, taskDesc} = useParams();
     const [loading, setLoading] = useState(false);
-    const [newTaskTitle, setNewTaskTitle] = useState('');
-    const [newTaskDesc, setNewTaskDesc] = useState('');
+    const [newTaskTitle, setNewTaskTitle] = useState(taskName);
+    const [newTaskDesc, setNewTaskDesc] = useState(taskDesc);
     const navigate = useNavigate();
-    const { boardId, taskId, taskName, taskDesc} = useParams();
 
   function handleSubmit() {
     setLoading(true);
@@ -20,7 +20,19 @@ const EditTaskForm = () => {
   async function editTaskInDB() {
       console.log(`New Title: ${newTaskTitle}\nNew Desc: ${newTaskDesc}`)
       try {
-        // ***logic for updating task in database GOES HERE
+        const response = await fetch(`http://localhost:8000/api/${boardId}/${columnId}/${taskId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              title: newTaskTitle,
+              desc: newTaskDesc
+            })
+          });
+        if(!response.ok) {
+            throw new Error('Failed to update task');
+        } else {
+            console.log(response);
+        };
       } catch(err) {
         console.error(err);
       };

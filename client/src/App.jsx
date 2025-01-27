@@ -15,7 +15,7 @@ export default function App() {
           path='/board/:boardId' element={<BoardView />}>
         </Route>
         <Route
-        path='/edit/:boardId/:taskId/:taskName/:taskDesc'
+        path='/edit/:boardId/:columnId/:taskId/:taskName/:taskDesc'
         element={<EditTaskForm />}
         >
         </Route>

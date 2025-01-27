@@ -62,7 +62,8 @@ const NewTaskForm = ({ setOpenNewTaskModal, boardId }) => {
                   name="desc" 
                   className="bg-black border border-white rounded-lg py-1 px-3" 
                   onChange={e => setTaskDesc(e.target.value)}
-                  placeholder="I.e., Design 1 mobile and 1 desktop layout"/>
+                  placeholder="I.e., Design 1 mobile and 1 desktop layout"
+                  required/>
             </div>
             <div className="flex justify-center">
               <Button type="submit" >Add</Button>

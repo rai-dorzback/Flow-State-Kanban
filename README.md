@@ -53,22 +53,27 @@ Resources
 ## Development Stage
 **Jan 26, 2024**
 Working on:
-- Edit functionality for task cards. Make modal work for both editing and adding.
-  - I may need to find a better place to actually put the EditTaskForm modal. Right now it's in TaskCard because I need a way to get the correct taskId/name/etc. But it doesn't make sense to have it there and confuses things a bit. Find another way to access the right task name and such?
-  - Need to figure out how to solve the below issue with a default value
+- Edit functionality for task cards
 
 Issues I ran into:
 - In setting a value for the text inputs so that it has the title/desc of that task and you can edit from there, for some reason it became read-only so the user couldn't actually edit it.
 - When I do have a default value, it only shows the most recently added task card as the default value. Clearly it is not reading the taskName/Desc every time the user clicks an edit button. It should be the task attached to said edit button but it's not.
+- I may need to find a better place to actually put the EditTaskForm modal. Right now it's in TaskCard because I need a way to get the correct taskId/name/etc. But it doesn't make sense to have it there and confuses things a bit. Find another way to access the right task name and such?
+- ***Sometimes when users submit an edited version of a task, I get this error even though I have only sent headers once:
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+- **When a task title has a question mark in it, it flips out
+
+How I solved the issue:
+- The value was read-only because I needed to use the defaultValue attribute instead.
+- I decided to make EditTaskForm it's own page entirely and add a route for it. Instead of passing in the boardId, taskId, taskName, and taskDesc through a bunch of components, they are query parameters.
+- Got the editing to work on the backend by modifying a PATCH request that updates both title and desc instead of one or the other. I had to require a task description when users add tasks since I'm using that as a query parameter. In the future, ***I want to figure out a different way to do this so descriptions are optional.
 
 Priorities:
+- Work on *** issues listed in today's development stage
+- Add delete buttons to boards, delete functionality for board, and exit animation
 - Design Homepage Desktop & Mobile
   - Include information about what the app is and how to use it
-- Design Add New Task Modal/Edit Task Modal on Desktop & Mobile. Maybe there's a way it can be the same modal. For Edit Task Modal, the current task info will be already entered into the form fields. Button will say "Save" instead of "Add."
-- Add edit functionality to tasks
-  - Create modal for editing task
-  - Change updateTaskStatus() in BoardView to be able to handle any update? Pass that function into the modal so we can update the title/desc in the DB and state
-- Add delete buttons to boards (and exit animation)
+- Design Add New Task Modal/Edit Task Modal on Desktop & Mobile.
 - Add tooltips to delete and edit buttons
 - Add exit animation for when task cards are deleted
 - The endpoints are getting very long and filled with ids. I'd like to find a way to hide this from the user.

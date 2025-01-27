@@ -50,7 +50,7 @@ const TaskCard = ({ taskId, boardId, columnId, taskName, taskDesc }) => {
                 <div>
                     <div className='flex'>
                         <p className='font-bold'>{ taskName }</p>
-                            <Link to={`/edit/${boardId}/${taskId}/${taskName}/${taskDesc}`}>
+                            <Link to={`/edit/${boardId}/${columnId}/${taskId}/${taskName}/${taskDesc}`}>
                                 <MdModeEdit 
                                     className="cursor-pointer text-xl" 
                                     >

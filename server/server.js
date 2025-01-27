@@ -68,9 +68,8 @@ async function startServer() {
         // PATCH request to edit/update board title
         app.patch('/api/:boardId/title', (req, res) => updateBoardTitle(req, res));
         // PATCH requests to edit/update tasks
-        app.patch('/api/:boardId/:taskId/status', (req, res) => updateTask(req, res, 'status'));
-        app.patch('/api/:boardId/:taskId/title', (req, res) => updateTask(req, res, 'title'));
-        app.patch('/api/:boardId/:taskId/desc', (req, res) => updateTask(req, res, 'desc'));
+        app.patch('/api/:boardId/:taskId/status', (req, res) => updateTaskStatus(req, res, 'status'));
+        app.patch('/api/:boardId/:columnId/:taskId', (req, res) => updateTask(req, res));
         
         // DELETE task
         app.delete('/api/:boardId/:columnId/:taskId', (req, res) => deleteTask(req, res));
@@ -213,8 +212,55 @@ async function readBoard(req, res) {
     };
 };
 
+async function updateTask(req, res) {
+    const boardId = req.params.boardId;
+    const columnId = req.params.columnId;
+    const taskId = req.params.taskId;
+    const updatedData = {
+                title: req.body.title,
+                desc: req.body.desc
+        }
 
-async function updateTask(req, res, field) {
+    try { 
+        // find board
+        const board = await Board.findById(boardId);
+        if (!board) {
+            return res.status(404).json({ message: 'Board not found' });
+        }
+
+        // find column
+        const column = board.columns.find(col => col._id.toString() === columnId);
+        if (!column) {
+            return res.status(404).json({ message: 'Column not found' });
+        }
+
+        // find index of task to be updated
+        const taskIndex = column.tasks.findIndex(task => task._id.toString() === taskId);
+        if(taskIndex === -1) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        // set the task's new data
+        column.tasks[taskIndex] = { ...column.tasks[taskIndex].toObject(), ...updatedData };
+        
+        const updatedBoard = await board.save();
+
+        res.status(200).json(updatedBoard);
+
+        if (!updatedBoard) {
+            return res.status(404).json({ message: 'Board not found' });
+        }
+
+        res.status(200).json(updatedBoard);
+
+    } catch(err) {
+        console.error(err);
+        res.status(404).json({ message: 'Error updating task' });
+    }
+}
+
+
+async function updateTaskStatus(req, res, field) {
     const boardId = req.params.boardId;
     const taskId = req.params.taskId;
     const updatedData = { [field]: req.body[field] }
@@ -252,7 +298,7 @@ async function updateTask(req, res, field) {
         }
 
         if(field === "status") {
-            await moveTaskColumn(board, task, oldColumn, updatedData[field]);
+            moveTaskColumn(board, task, oldColumn, updatedData[field]);
         }
 
         const updatedBoard = await board.save();
