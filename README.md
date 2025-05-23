@@ -394,7 +394,7 @@ Next Steps
 ## Contact
 <p> 
   <a href="https://rai-dorzback.netlify.app/" target="blank">
-    <img src="https://img.shields.io/badge/Ibsite-563d7c?&style=for-the-badge" alt="Ibsite">
+    <img src="https://img.shields.io/badge/website-563d7c?&style=for-the-badge" alt="website">
   </a>
   <a href="https://www.linkedin.com/in/rai-d/">
     <img src="https://img.shields.io/badge/LinkedIn-046E6D?logo=linkedin&style=for-the-badge">
